@@ -75,14 +75,15 @@
     </div>
 
     <!-- Controles da Direita -->
-    <div class="flex items-center space-x-3 text-sm">
-      <span class="hidden sm:inline-flex items-center text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted border border-craft-border dark:border-craft-darkBorder px-2 py-0.5 rounded">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-2"></span>
-        <span data-i18n="statusConnected">SISTEMAS OPERANDO</span>
-      </span>
+    <div class="flex items-center space-x-2 sm:space-x-3 text-sm">
+      <!-- Botão Central de Dados da Equipe -->
+      <button onclick="toggleDataHubModal(true)" class="inline-flex items-center space-x-1.5 px-2.5 py-1 text-xs border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover rounded font-mono-tech transition-colors" title="Repositório de dados e arquivos da equipe">
+        <i class="fa-solid fa-folder-open text-[11px]"></i>
+        <span class="font-bold" data-i18n="btnDataHub">DADOS DA EQUIPE</span>
+      </button>
 
       <!-- Botão de Instalar PWA -->
-      <button id="btnInstallPwa" onclick="triggerPwaPrompt()" class="hidden items-center space-x-1.5 px-2.5 py-1 text-xs border border-craft-border dark:border-craft-darkBorder hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover rounded font-mono-tech text-xs transition-colors">
+      <button id="btnInstallPwa" onclick="triggerPwaPrompt()" class="hidden items-center space-x-1.5 px-2.5 py-1 text-xs border border-craft-border dark:border-craft-darkBorder hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover rounded font-mono-tech transition-colors">
         <i class="fa-solid fa-download text-[11px]"></i>
         <span data-i18n="installApp">INSTALAR APP</span>
       </button>
@@ -119,6 +120,7 @@
           <option value="geo" data-i18n="catGeo">Geo & Rotas (QGIS)</option>
           <option value="campo" data-i18n="catCampo">Fiscalização & Campo</option>
           <option value="cirio" data-i18n="catCirio">Operação Círio</option>
+          <option value="planejamento" data-i18n="catPlan">Planejamento & Engenharia</option>
         </select>
       </div>
 
@@ -139,15 +141,15 @@
   <!-- ==================== CONTEÚDO DOS PROJETOS ==================== -->
   <main class="flex-1 px-4 sm:px-8 py-5 max-w-7xl mx-auto w-full">
     
+    <!-- SEÇÃO 1: MÓDULOS EM PRODUÇÃO -->
     <div class="mb-3 text-[11px] font-mono-tech uppercase tracking-wider text-craft-muted dark:text-craft-darkMuted flex items-center space-x-2">
-      <span data-i18n="sectionProduction">SISTEMAS OPERACIONAIS EM PRODUÇÃO</span>
+      <span data-i18n="sectionProduction">SISTEMAS OPERACIONAIS EM PRODUÇÃO (ONLINE)</span>
       <span class="h-[1px] bg-craft-border dark:bg-craft-darkBorder flex-1"></span>
     </div>
 
-    <!-- Grid de Aplicativos -->
     <div id="appsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
 
-      <!-- PROJETO 1: MapaBL (QGIS / Setores) -->
+      <!-- PROJETO 1: MapaBL -->
       <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder hover:border-craft-borderHover dark:hover:border-craft-darkBorderHover rounded p-4 flex flex-col justify-between shadow-sm transition-all" data-category="geo" data-name="mapabl rotas capinacao raspagem qgis setores mapas">
         <div>
           <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted mb-3">
@@ -227,8 +229,8 @@
         </div>
       </div>
 
-      <!-- PROJETO 3: Instalação de Papeleiras (NOVO!) -->
-      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder hover:border-craft-borderHover dark:hover:border-craft-borderHover rounded p-4 flex flex-col justify-between shadow-sm transition-all" data-category="campo" data-name="instalacao papeleiras lixeiras logradouros mapeamento campo">
+      <!-- PROJETO 3: Papeleiras -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder hover:border-craft-borderHover dark:hover:border-craft-darkBorderHover rounded p-4 flex flex-col justify-between shadow-sm transition-all" data-category="campo" data-name="instalacao papeleiras lixeiras logradouros mapeamento campo">
         <div>
           <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted mb-3">
             <span>V1.0.2</span>
@@ -349,52 +351,116 @@
 
     </div>
 
-    <!-- Seção: Homologação e Engenharia -->
+    <!-- SEÇÃO 2: MÓDULOS EM HOMOLOGAÇÃO & ENGENHARIA -->
     <div class="mb-3 text-[11px] font-mono-tech uppercase tracking-wider text-craft-muted dark:text-craft-darkMuted flex items-center space-x-2">
-      <span data-i18n="sectionUpcoming">MÓDULOS EM HOMOLOGAÇÃO & DADOS</span>
+      <span data-i18n="sectionUpcoming">MÓDULOS EM HOMOLOGAÇÃO & ENGENHARIA (EM BREVE)</span>
       <span class="h-[1px] bg-craft-border dark:bg-craft-darkBorder flex-1"></span>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
       
-      <!-- Card: Aterro do Aurá (Power BI) -->
-      <div class="bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded p-4 flex flex-col justify-between">
+      <!-- CARD 1: Conexão QGIS -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded p-4 flex flex-col justify-between" data-category="geo" data-name="qgis conexao direta wfs geojson camadas vetoriais sincronizacao">
         <div>
           <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted mb-3">
             <span>V0.9.0</span>
-            <span class="font-bold text-craft-muted" data-i18n="badgeIntegration">EM INTEGRAÇÃO</span>
+            <span class="font-bold text-craft-muted font-mono-tech" data-i18n="badgeIntegration">EM INTEGRAÇÃO</span>
           </div>
           <div class="flex items-start space-x-3 mb-2.5">
             <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-muted text-lg shrink-0">
-              <i class="fa-solid fa-dumpster"></i>
+              <i class="fa-solid fa-network-wired"></i>
             </div>
             <div>
               <div class="flex items-center space-x-1.5">
-                <h3 class="font-bold text-sm leading-none">Aterro do Aurá</h3>
-                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted">POWER BI</span>
+                <h3 class="font-bold text-sm leading-none">Conexão QGIS</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted">WFS / GEOJSON</span>
               </div>
-              <p class="text-xs text-craft-muted mt-0.5" data-i18n="auraSubtitle">Pesagem e Transbordo</p>
+              <p class="text-xs text-craft-muted mt-0.5" data-i18n="qgisSyncSubtitle">Sincronização em Tempo Real</p>
             </div>
           </div>
-          <p class="text-[11px] text-craft-muted line-clamp-2 mb-3" data-i18n="auraDesc">
-            Sincronização de pesagem de caminhões, básculas e destinação final de resíduos.
+          <p class="text-[11px] text-craft-muted line-clamp-2 mb-3 leading-relaxed" data-i18n="qgisSyncDesc">
+            Alimentação de camadas vetoriais direto no QGIS sem necessidade de exportar shapefiles.
           </p>
-          <div class="text-[10px] font-mono-tech text-craft-muted">Aguardando chave do TI</div>
+          <div class="text-[10px] font-mono-tech text-craft-muted">api.cblplanejamento.com.br/geo</div>
         </div>
 
         <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
-          <button onclick="alert('Módulo de pesagem do Aurá em fase de homologação junto ao banco corporativo.')" class="flex-1 text-center py-1.5 text-xs font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn text-craft-muted uppercase cursor-pointer hover:bg-craft-btnHover" data-i18n="btnStatus">
+          <button onclick="toggleDataHubModal(true)" class="flex-1 text-center py-1.5 text-xs font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn text-craft-muted uppercase cursor-pointer hover:bg-craft-btnHover transition-colors" data-i18n="btnVerCamadas">
+            VER CAMADAS
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 2: Emissor de Relatórios em PDF -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded p-4 flex flex-col justify-between" data-category="planejamento" data-name="emissor relatorios pdf medicao fiscalizacao prestacao de contas prefeitura">
+        <div>
+          <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted mb-3">
+            <span>V0.5.0</span>
+            <span class="font-bold text-craft-muted font-mono-tech" data-i18n="badgeDev">DESENVOLVIMENTO</span>
+          </div>
+          <div class="flex items-start space-x-3 mb-2.5">
+            <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-muted text-lg shrink-0">
+              <i class="fa-solid fa-file-pdf"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <h3 class="font-bold text-sm leading-none">Emissor de PDF</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted">MEDIÇÃO</span>
+              </div>
+              <p class="text-xs text-craft-muted mt-0.5" data-i18n="pdfSubtitle">Prestação de Contas Mensal</p>
+            </div>
+          </div>
+          <p class="text-[11px] text-craft-muted line-clamp-2 mb-3 leading-relaxed" data-i18n="pdfDesc">
+            Geração de relatórios mensais padronizados com fotos antes/depois, trechos e carimbo pericial.
+          </p>
+          <div class="text-[10px] font-mono-tech text-craft-muted">Aguardando modelo de medição</div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
+          <button onclick="alert('Emissor de Relatório PDF: Em estruturação conforme o modelo oficial da CBL e Prefeitura.')" class="flex-1 text-center py-1.5 text-xs font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn text-craft-muted uppercase cursor-pointer hover:bg-craft-btnHover transition-colors" data-i18n="btnStatus">
             STATUS
           </button>
         </div>
       </div>
 
-      <!-- Card: Calculadora de Metragem de Capinação -->
-      <div class="bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded p-4 flex flex-col justify-between">
+      <!-- CARD 3: Monitor CCO / TV -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded p-4 flex flex-col justify-between" data-category="planejamento" data-name="monitor cco healthcheck modo tv apresentacao status api">
+        <div>
+          <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted mb-3">
+            <span>V1.0.0</span>
+            <span class="font-bold text-craft-muted font-mono-tech" data-i18n="badgeIntegration">EM INTEGRAÇÃO</span>
+          </div>
+          <div class="flex items-start space-x-3 mb-2.5">
+            <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-muted text-lg shrink-0">
+              <i class="fa-solid fa-tv"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <h3 class="font-bold text-sm leading-none">Monitor CCO</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted">MODO TV</span>
+              </div>
+              <p class="text-xs text-craft-muted mt-0.5" data-i18n="ccoSubtitle">Painel de Sala de Operações</p>
+            </div>
+          </div>
+          <p class="text-[11px] text-craft-muted line-clamp-2 mb-3 leading-relaxed" data-i18n="ccoDesc">
+            Exibição contínua em tela cheia com rotação automática entre mapas, métricas e alertas da frota.
+          </p>
+          <div class="text-[10px] font-mono-tech text-craft-muted">Base Operacional Ananindeua</div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
+          <button onclick="alert('Monitor CCO: Modo apresentação para exibição contínua em telas no setor de planejamento.')" class="flex-1 text-center py-1.5 text-xs font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn text-craft-muted uppercase cursor-pointer hover:bg-craft-btnHover transition-colors" data-i18n="btnStatus">
+            STATUS
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 4: Calculadora de Capinação -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded p-4 flex flex-col justify-between" data-category="planejamento" data-name="calculadora rendimento capinacao raspagem homem hora sarjetas">
         <div>
           <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted mb-3">
             <span>V0.5.0</span>
-            <span class="font-bold text-craft-muted" data-i18n="badgeDev">DESENVOLVIMENTO</span>
+            <span class="font-bold text-craft-muted font-mono-tech" data-i18n="badgeDev">DESENVOLVIMENTO</span>
           </div>
           <div class="flex items-start space-x-3 mb-2.5">
             <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-muted text-lg shrink-0">
@@ -408,14 +474,78 @@
               <p class="text-xs text-craft-muted mt-0.5" data-i18n="rendSubtitle">Cálculo de Homem-Hora</p>
             </div>
           </div>
-          <p class="text-[11px] text-craft-muted line-clamp-2 mb-3" data-i18n="rendDesc">
-            Estimativa de equipes necessárias por metro linear de raspagem e sarjeta.
+          <p class="text-[11px] text-craft-muted line-clamp-2 mb-3 leading-relaxed" data-i18n="rendDesc">
+            Estimativa de equipes necessárias por metro linear de raspagem de sarjeta e capinação.
           </p>
-          <div class="text-[10px] font-mono-tech text-craft-muted">Planejamento</div>
+          <div class="text-[10px] font-mono-tech text-craft-muted">Planejamento Operacional</div>
         </div>
 
         <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
-          <button onclick="alert('Calculadora de rendimento operacional em formulação pelo planejamento.')" class="flex-1 text-center py-1.5 text-xs font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn text-craft-muted uppercase cursor-pointer hover:bg-craft-btnHover" data-i18n="btnStatus">
+          <button onclick="alert('Calculadora de Rendimento: Estimativa paramétrica de homem-hora por trecho de logradouro.')" class="flex-1 text-center py-1.5 text-xs font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn text-craft-muted uppercase cursor-pointer hover:bg-craft-btnHover transition-colors" data-i18n="btnStatus">
+            STATUS
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 5: Bota-Fora (Caçambas) -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded p-4 flex flex-col justify-between" data-category="planejamento" data-name="controle cacambas bota fora entulho logistica residuos">
+        <div>
+          <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted mb-3">
+            <span>V0.4.0</span>
+            <span class="font-bold text-craft-muted font-mono-tech" data-i18n="badgeDev">DESENVOLVIMENTO</span>
+          </div>
+          <div class="flex items-start space-x-3 mb-2.5">
+            <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-muted text-lg shrink-0">
+              <i class="fa-solid fa-truck-moving"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <h3 class="font-bold text-sm leading-none">Bota-Fora</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted">CAÇAMBAS</span>
+              </div>
+              <p class="text-xs text-craft-muted mt-0.5" data-i18n="botaSubtitle">Logística de Entulho</p>
+            </div>
+          </div>
+          <p class="text-[11px] text-craft-muted line-clamp-2 mb-3 leading-relaxed" data-i18n="botaDesc">
+            Mapeamento de caçambas estacionárias, tempo de permanência e destinação final de resíduos inertes.
+          </p>
+          <div class="text-[10px] font-mono-tech text-craft-muted">Logística de Resíduos</div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
+          <button onclick="alert('Controle de Bota-Fora: Rastreamento de caçambas de entulho e tempo de permanência.')" class="flex-1 text-center py-1.5 text-xs font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn text-craft-muted uppercase cursor-pointer hover:bg-craft-btnHover transition-colors" data-i18n="btnStatus">
+            STATUS
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 6: Aterro do Aurá (Balança) -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded p-4 flex flex-col justify-between" data-category="planejamento" data-name="aterro do aura balanca pesagem transbordo toneladas caminhao power bi ti">
+        <div>
+          <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted mb-3">
+            <span>V0.9.0</span>
+            <span class="font-bold text-craft-muted font-mono-tech" data-i18n="badgeIntegration">EM INTEGRAÇÃO</span>
+          </div>
+          <div class="flex items-start space-x-3 mb-2.5">
+            <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-muted text-lg shrink-0">
+              <i class="fa-solid fa-dumpster"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <h3 class="font-bold text-sm leading-none">Aterro do Aurá</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted">POWER BI</span>
+              </div>
+              <p class="text-xs text-craft-muted mt-0.5" data-i18n="auraSubtitle">Balança de Pesagem</p>
+            </div>
+          </div>
+          <p class="text-[11px] text-craft-muted line-clamp-2 mb-3 leading-relaxed" data-i18n="auraDesc">
+            Sincronização de pesagem na balança de caminhões, tickets de pesagem e destinação final.
+          </p>
+          <div class="text-[10px] font-mono-tech text-craft-muted">Aguardando chave do TI</div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
+          <button onclick="alert('Aterro do Aurá: Módulo de integração da balança de pesagem rodoviária e transbordo.')" class="flex-1 text-center py-1.5 text-xs font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn text-craft-muted uppercase cursor-pointer hover:bg-craft-btnHover transition-colors" data-i18n="btnStatus">
             STATUS
           </button>
         </div>
@@ -439,11 +569,251 @@
     </div>
   </footer>
 
+  <!-- ==================== MODAL: CENTRAL DE DADOS & ARQUIVOS DA EQUIPE ==================== -->
+  <div id="dataHubModal" class="fixed inset-0 bg-black/60 backdrop-blur-[2px] hidden items-center justify-center z-50 p-3 sm:p-4">
+    <div class="bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded shadow-2xl max-w-4xl w-full overflow-hidden flex flex-col max-h-[92vh]">
+      
+      <!-- Cabeçalho -->
+      <div class="border-b border-craft-border dark:border-craft-darkBorder px-6 py-3.5 flex items-center justify-between bg-craft-bg dark:bg-craft-darkBg">
+        <div class="flex items-center space-x-3">
+          <div class="w-7 h-7 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-card dark:bg-craft-darkCard flex items-center justify-center text-xs">
+            <i class="fa-solid fa-folder-open text-craft-muted"></i>
+          </div>
+          <div>
+            <h2 class="font-bold text-sm sm:text-base leading-tight" data-i18n="dataHubTitle">Central de Dados & Repositório do Planejamento</h2>
+            <p class="text-[10px] font-mono-tech text-craft-muted uppercase" data-i18n="dataHubSub">Recursos compartilhados para QGIS, Power BI e AutoCAD</p>
+          </div>
+        </div>
+        <button onclick="toggleDataHubModal(false)" class="text-craft-muted hover:text-craft-text dark:hover:text-craft-darkText">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Abas Internas -->
+      <div class="flex border-b border-craft-border dark:border-craft-darkBorder bg-craft-bg/50 dark:bg-craft-darkBg/50 px-6 text-xs font-mono-tech">
+        <button id="tabGeoBtn" onclick="switchDataTab('geo')" class="py-2.5 px-3 border-b-2 border-craft-text dark:border-craft-darkText font-bold text-craft-text dark:text-craft-darkText" data-i18n="tabGeo">1. CAMADAS GEO (QGIS)</button>
+        <button id="tabTablesBtn" onclick="switchDataTab('tables')" class="py-2.5 px-3 border-b-2 border-transparent text-craft-muted hover:text-craft-text" data-i18n="tabTables">2. TABELAS (POWER BI)</button>
+        <button id="tabCadBtn" onclick="switchDataTab('cad')" class="py-2.5 px-3 border-b-2 border-transparent text-craft-muted hover:text-craft-text" data-i18n="tabCad">3. BIBLIOTECA CAD</button>
+        <button id="tabFrentesBtn" onclick="switchDataTab('frentes')" class="py-2.5 px-3 border-b-2 border-transparent text-craft-muted hover:text-craft-text" data-i18n="tabFrentes">4. COLETA PROGRAMADA</button>
+      </div>
+
+      <!-- Conteúdo das Abas -->
+      <div class="p-6 overflow-y-auto space-y-4 text-xs">
+
+        <!-- ABA 1: QGIS -->
+        <div id="tabContentGeo" class="space-y-4">
+          <div class="p-3 bg-white dark:bg-[#1e1e21] border border-craft-border dark:border-craft-darkBorder rounded">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-sm">Papeleiras Instaladas (Camada Dinâmica GeoJSON)</span>
+              <span class="text-[9px] font-mono-tech border border-craft-border dark:border-craft-darkBorder px-1.5 py-0.5 rounded text-craft-muted">API STREAMING</span>
+            </div>
+            <p class="text-craft-muted mb-2">Cole essa URL no QGIS em <em>Camada &gt; Adicionar Camada Vetorial &gt; Protocolo</em> para abrir os pontos cadastrados em campo em tempo real:</p>
+            <div class="flex items-center space-x-2">
+              <input type="text" readonly value="https://cblplanejamento.com.br/api/geo/papeleiras.geojson" class="flex-1 bg-craft-bg dark:bg-craft-darkBg border border-craft-border dark:border-craft-darkBorder rounded px-2.5 py-1 text-xs font-mono-tech text-craft-muted select-all" />
+              <button onclick="navigator.clipboard.writeText('https://cblplanejamento.com.br/api/geo/papeleiras.geojson'); alert('URL da camada copiada! Cole no QGIS.');" class="px-3 py-1 bg-craft-btn dark:bg-craft-darkBtn border border-craft-border dark:border-craft-darkBorder rounded font-mono-tech font-bold uppercase hover:bg-craft-btnHover">COPIAR</button>
+            </div>
+          </div>
+
+          <div class="p-3 bg-white dark:bg-[#1e1e21] border border-craft-border dark:border-craft-darkBorder rounded flex items-center justify-between">
+            <div>
+              <div class="font-bold">Malha Oficial de Setores de Belém (Shapefile)</div>
+              <p class="text-craft-muted">Polígonos dos setores de coleta domiciliar, raspagem e capinação (.zip).</p>
+            </div>
+            <button onclick="alert('Download do Shapefile compactado dos setores de Belém (Malha 2026).')" class="px-3 py-1.5 border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover rounded font-mono-tech font-bold uppercase">
+              <i class="fa-solid fa-download mr-1"></i> BAIXAR ZIP
+            </button>
+          </div>
+        </div>
+
+        <!-- ABA 2: POWER BI & TABELAS -->
+        <div id="tabContentTables" class="space-y-4 hidden">
+          <div class="p-3 bg-white dark:bg-[#1e1e21] border border-craft-border dark:border-craft-darkBorder rounded flex items-center justify-between">
+            <div>
+              <div class="font-bold">Base Completa de Papeleiras (Excel / CSV)</div>
+              <p class="text-craft-muted">Exportação com ID, Rua, Bairro, Data de Instalação, Coordenadas e Status de Conservação.</p>
+            </div>
+            <button onclick="alert('Gerando exportação tabular para importação no Power BI Desktop...')" class="px-3 py-1.5 border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover rounded font-mono-tech font-bold uppercase">
+              <i class="fa-solid fa-file-excel mr-1"></i> EXPORTAR XLS
+            </button>
+          </div>
+
+          <div class="p-3 bg-white dark:bg-[#1e1e21] border border-craft-border dark:border-craft-darkBorder rounded flex items-center justify-between">
+            <div>
+              <div class="font-bold">Registros do Relatório Fotográfico Mensal</div>
+              <p class="text-craft-muted">Tabela consolidada de evidências de capinação e raspagem com links diretos das fotos.</p>
+            </div>
+            <button onclick="alert('Exportando tabela de fotos e coordenadas da capinação...')" class="px-3 py-1.5 border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover rounded font-mono-tech font-bold uppercase">
+              <i class="fa-solid fa-table mr-1"></i> EXPORTAR CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- ABA 3: AUTOCAD -->
+        <div id="tabContentCad" class="space-y-4 hidden">
+          <div class="p-3 bg-white dark:bg-[#1e1e21] border border-craft-border dark:border-craft-darkBorder rounded flex items-center justify-between">
+            <div>
+              <div class="font-bold">Gabarito Padrão de Fixação de Papeleiras (.DWG)</div>
+              <p class="text-craft-muted">Desenho técnico com vista frontal, lateral e engaste em postes/gradis metálicos.</p>
+            </div>
+            <button onclick="alert('Download do arquivo técnico DWG de papeleiras para AutoCAD LT.')" class="px-3 py-1.5 border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover rounded font-mono-tech font-bold uppercase">
+              <i class="fa-solid fa-drafting-compass mr-1"></i> BAIXAR DWG
+            </button>
+          </div>
+
+          <div class="p-3 bg-white dark:bg-[#1e1e21] border border-craft-border dark:border-craft-darkBorder rounded flex items-center justify-between">
+            <div>
+              <div class="font-bold">Perfil Transversal de Meio-Fio e Sarjetas (.DWG)</div>
+              <p class="text-craft-muted">Seção transversal padrão para projetos de raspagem e caiação de vias públicas.</p>
+            </div>
+            <button onclick="alert('Download do perfil transversal em DWG.')" class="px-3 py-1.5 border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover rounded font-mono-tech font-bold uppercase">
+              <i class="fa-solid fa-drafting-compass mr-1"></i> BAIXAR DWG
+            </button>
+          </div>
+        </div>
+
+        <!-- ABA 4: CRONOGRAMA DE COLETA PROGRAMADA -->
+        <div id="tabContentFrentes" class="space-y-3 hidden">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] text-craft-muted font-mono-tech uppercase">CALENDÁRIO DA COLETA PROGRAMADA &bull; NOVEMBRO DE 2026</span>
+            <span class="text-[10px] font-mono-tech border border-craft-border dark:border-craft-darkBorder px-2 py-0.5 rounded text-craft-muted">BELÉM / CONJUNTOS</span>
+          </div>
+          
+          <div class="border border-craft-border dark:border-craft-darkBorder rounded overflow-hidden max-h-72 overflow-y-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-craft-bg dark:bg-craft-darkBg font-mono-tech text-[10px] uppercase text-craft-muted border-b border-craft-border dark:border-craft-darkBorder sticky top-0 z-10">
+                <tr>
+                  <th class="p-2.5">Data</th>
+                  <th class="p-2.5">Dia</th>
+                  <th class="p-2.5">Conjuntos / Localidades Atendidas</th>
+                  <th class="p-2.5 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-craft-border/50 dark:divide-craft-darkBorder/50 font-mono-tech text-[11px]">
+                <tr>
+                  <td class="p-2.5 font-bold">05/11</td>
+                  <td class="p-2.5 text-craft-muted">Quinta-feira</td>
+                  <td class="p-2.5">Conjunto Verdejante IV</td>
+                  <td class="p-2.5 text-right text-craft-muted">CONCLUÍDO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">06/11</td>
+                  <td class="p-2.5 text-craft-muted">Sexta-feira</td>
+                  <td class="p-2.5">Conjunto Mestre Cardoso I</td>
+                  <td class="p-2.5 text-right text-craft-muted">CONCLUÍDO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">09/11</td>
+                  <td class="p-2.5 text-craft-muted">Segunda-feira</td>
+                  <td class="p-2.5">Conjunto Ó de Almeida e Conjunto Paraíso dos Pássaros</td>
+                  <td class="p-2.5 text-right text-craft-muted">CONCLUÍDO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">10/11</td>
+                  <td class="p-2.5 text-craft-muted">Terça-feira</td>
+                  <td class="p-2.5">Conjunto Carmelândia</td>
+                  <td class="p-2.5 text-right text-craft-muted">CONCLUÍDO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">11/11</td>
+                  <td class="p-2.5 text-craft-muted">Quarta-feira</td>
+                  <td class="p-2.5">Conjunto Mestre Cardoso II</td>
+                  <td class="p-2.5 text-right text-craft-muted">CONCLUÍDO</td>
+                </tr>
+                <tr class="bg-craft-card dark:bg-craft-darkCard font-semibold">
+                  <td class="p-2.5 font-bold">12/11</td>
+                  <td class="p-2.5 text-craft-muted">Quinta-feira</td>
+                  <td class="p-2.5">Conjunto Cordeiro</td>
+                  <td class="p-2.5 text-right text-emerald-600 font-bold">&bull; HOJE</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">13/11</td>
+                  <td class="p-2.5 text-craft-muted">Sexta-feira</td>
+                  <td class="p-2.5">Conjunto Castro Moura</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">16/11</td>
+                  <td class="p-2.5 text-craft-muted">Segunda-feira</td>
+                  <td class="p-2.5">Conjunto Verequete</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">17/11</td>
+                  <td class="p-2.5 text-craft-muted">Terça-feira</td>
+                  <td class="p-2.5">Conjunto Xingu</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">18/11</td>
+                  <td class="p-2.5 text-craft-muted">Quarta-feira</td>
+                  <td class="p-2.5">Conjunto Kikuche</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">19/11</td>
+                  <td class="p-2.5 text-craft-muted">Quinta-feira</td>
+                  <td class="p-2.5">Conjunto Providência</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">23/11</td>
+                  <td class="p-2.5 text-craft-muted">Segunda-feira</td>
+                  <td class="p-2.5">Conjunto Duas Irmãs</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">24/11</td>
+                  <td class="p-2.5 text-craft-muted">Terça-feira</td>
+                  <td class="p-2.5">Conjunto Eduardo Angelim / Conjunto Casas Térreas</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">25/11</td>
+                  <td class="p-2.5 text-craft-muted">Quarta-feira</td>
+                  <td class="p-2.5">Conjunto Panorama XXI / Conjunto Promorar</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">26/11</td>
+                  <td class="p-2.5 text-craft-muted">Quinta-feira</td>
+                  <td class="p-2.5">Conjunto Verdejante I</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">27/11</td>
+                  <td class="p-2.5 text-craft-muted">Sexta-feira</td>
+                  <td class="p-2.5">Conjunto Bananal</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">30/11</td>
+                  <td class="p-2.5 text-craft-muted">Segunda-feira</td>
+                  <td class="p-2.5">Conjunto Sorriso</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Rodapé do Modal -->
+      <div class="border-t border-craft-border dark:border-craft-darkBorder px-6 py-3 flex items-center justify-between bg-craft-bg dark:bg-craft-darkBg">
+        <span class="text-[10px] font-mono-tech text-craft-muted">SINCRONIZADO COM O BANCO DE DADOS OPERACIONAL</span>
+        <button onclick="toggleDataHubModal(false)" class="px-4 py-1.5 bg-craft-text text-craft-card dark:bg-craft-darkText dark:text-craft-darkBg rounded text-xs font-bold font-mono-tech uppercase tracking-wider transition-colors">
+          FECHAR
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <!-- ==================== MODAL DE CONFIGURAÇÕES ==================== -->
   <div id="settingsModal" class="fixed inset-0 bg-black/50 backdrop-blur-[1px] hidden items-center justify-center z-50 p-4">
     <div class="bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[90vh]">
       
-      <!-- Cabeçalho do Modal -->
+      <!-- Cabeçalho -->
       <div class="border-b border-craft-border dark:border-craft-darkBorder px-6 py-4 flex items-center justify-between bg-craft-bg dark:bg-craft-darkBg">
         <div class="flex items-center space-x-3">
           <div class="w-7 h-7 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-card dark:bg-craft-darkCard flex items-center justify-center font-bold text-xs">
@@ -459,10 +829,9 @@
         </button>
       </div>
 
-      <!-- Corpo do Modal -->
+      <!-- Corpo -->
       <div class="p-6 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
         
-        <!-- Coluna Esquerda -->
         <div class="space-y-4">
           <!-- Idioma -->
           <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21]">
@@ -474,7 +843,7 @@
             </select>
           </div>
 
-          <!-- Aparência / Tema Funcional -->
+          <!-- Aparência -->
           <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21]">
             <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted mb-2" data-i18n="cfgAppearance">APARÊNCIA</label>
             <div class="grid grid-cols-3 gap-1 border border-craft-border dark:border-craft-darkBorder rounded p-0.5 bg-craft-bg dark:bg-craft-darkBg text-[11px] font-mono-tech text-center">
@@ -484,7 +853,7 @@
             </div>
           </div>
 
-          <!-- Opções Operacionais -->
+          <!-- Sincronização -->
           <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21] space-y-2">
             <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted" data-i18n="cfgQgisSync">SINCRONIZAÇÃO QGIS & SERVIÇOS</label>
             <div class="flex items-center justify-between text-[11px]">
@@ -498,11 +867,10 @@
           </div>
         </div>
 
-        <!-- Coluna Direita -->
         <div class="space-y-4">
-          <!-- Aplicativo no Celular (PWA) -->
+          <!-- PWA -->
           <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21] space-y-2">
-            <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted" data-i18n="cfgPwaTitle">INSTALAÇÃO NO DISPOSITIVO (PWA)</label>
+            <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted" data-i18n="cfgPwaTitle">INSTALAÇÃO NO DISPOSITIVO</label>
             <p class="text-[11px] text-craft-muted dark:text-craft-darkMuted" data-i18n="cfgPwaDesc">
               Instale este portal na tela inicial do celular ou desktop para acessar sem barra de navegação.
             </p>
@@ -511,10 +879,10 @@
             </button>
           </div>
 
-          <!-- Contato do Setor -->
+          <!-- Contato -->
           <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21] space-y-1">
             <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted" data-i18n="cfgContact">SETOR DE PLANEJAMENTO</label>
-            <p class="text-[11px] font-bold">Consórcio Belém Limpa</p>
+            <p class="text-[11px] font-bold">Concessionária Belém Limpa</p>
             <p class="text-[11px] text-craft-muted font-mono-tech">planejamento@cblplanejamento.com.br</p>
             <p class="text-[10px] text-craft-muted">Ananindeua / Belém &bull; Pará</p>
           </div>
@@ -522,7 +890,7 @@
 
       </div>
 
-      <!-- Rodapé do Modal -->
+      <!-- Rodapé -->
       <div class="border-t border-craft-border dark:border-craft-darkBorder px-6 py-3 flex items-center justify-between bg-craft-bg dark:bg-craft-darkBg">
         <button onclick="toggleSettingsModal(false)" class="px-4 py-1.5 border border-craft-border dark:border-craft-darkBorder rounded text-xs hover:bg-craft-btnHover transition-colors" data-i18n="btnCancel">
           Fechar
@@ -537,11 +905,11 @@
 
   <!-- ==================== SCRIPTS ==================== -->
   <script>
-    // Dicionário de Idiomas
     const translations = {
       pt: {
         suiteSubtitle: 'PLANEJAMENTO OPERACIONAL',
         statusConnected: 'SISTEMAS OPERANDO',
+        btnDataHub: 'DADOS DA EQUIPE',
         installApp: 'INSTALAR APP',
         orderLabel: 'ORDENAR',
         searchPlaceholder: 'Buscar aplicativos...',
@@ -549,13 +917,15 @@
         catGeo: 'Geo & Rotas (QGIS)',
         catCampo: 'Fiscalização & Campo',
         catCirio: 'Operação Círio',
-        sectionProduction: 'SISTEMAS OPERACIONAIS EM PRODUÇÃO',
-        sectionUpcoming: 'MÓDULOS EM HOMOLOGAÇÃO & DADOS',
+        catPlan: 'Planejamento & Engenharia',
+        sectionProduction: 'SISTEMAS OPERACIONAIS EM PRODUÇÃO (ONLINE)',
+        sectionUpcoming: 'MÓDULOS EM HOMOLOGAÇÃO & ENGENHARIA (EM BREVE)',
         badgeOnline: 'ONLINE',
         badgeIntegration: 'EM INTEGRAÇÃO',
         badgeDev: 'DESENVOLVIMENTO',
         btnOpen: 'ABRIR',
         btnStatus: 'STATUS',
+        btnVerCamadas: 'VER CAMADAS',
         mapaSubtitle: 'Rotas e frentes operacionais',
         mapaDesc: 'Setores de coleta, raspagem e capinação sincronizados com a malha viária e shapefiles.',
         fotoSubtitle: 'Evidências e fiscalização',
@@ -566,10 +936,18 @@
         cirioDesc: 'Controle das frentes de serviço no trajeto oficial, pontos de coleta e descarte do evento.',
         dashCirioSubtitle: 'Métricas da Operação',
         dashCirioDesc: 'Acompanhamento de volume de resíduos recolhidos, rotas liberadas e equipes ativas no Círio.',
-        auraSubtitle: 'Pesagem e Transbordo',
-        auraDesc: 'Sincronização de pesagem de caminhões, básculas e destinação final de resíduos.',
+        qgisSyncSubtitle: 'Sincronização em Tempo Real',
+        qgisSyncDesc: 'Alimentação de camadas vetoriais direto no QGIS sem necessidade de exportar shapefiles.',
+        pdfSubtitle: 'Prestação de Contas Mensal',
+        pdfDesc: 'Geração de relatórios mensais padronizados com fotos antes/depois, trechos e carimbo pericial.',
+        ccoSubtitle: 'Painel de Sala de Operações',
+        ccoDesc: 'Exibição contínua em tela cheia com rotação automática entre mapas, métricas e alertas da frota.',
+        auraSubtitle: 'Balança de Pesagem',
+        auraDesc: 'Sincronização de pesagem na balança de caminhões, tickets de pesagem e destinação final.',
         rendSubtitle: 'Cálculo de Homem-Hora',
-        rendDesc: 'Estimativa de equipes necessárias por metro linear de raspagem e sarjeta.',
+        rendDesc: 'Estimativa de equipes necessárias por metro linear de raspagem de sarjeta e capinação.',
+        botaSubtitle: 'Logística de Entulho',
+        botaDesc: 'Mapeamento de caçambas estacionárias, tempo de permanência e destinação final de resíduos inertes.',
         footerDept: 'PLANEJAMENTO OPERACIONAL',
         footerSecure: 'AMBIENTE SEGURO (HTTPS)',
         settingsTitle: 'Configurações',
@@ -578,16 +956,23 @@
         cfgQgisSync: 'SINCRONIZAÇÃO QGIS & SERVIÇOS',
         cfgQgisAuto: 'Atualizar camadas WFS/GeoJSON',
         cfgNotifyFrentes: 'Avisar novas frentes de capinação',
-        cfgPwaTitle: 'INSTALAÇÃO NO DISPOSITIVO (PWA)',
+        cfgPwaTitle: 'INSTALAÇÃO NO DISPOSITIVO',
         cfgPwaDesc: 'Instale este portal na tela inicial do celular ou desktop para acessar sem barra de navegação.',
         btnInstallPwa: 'INSTALAR APLICATIVO',
         cfgContact: 'SETOR DE PLANEJAMENTO',
         btnCancel: 'Fechar',
-        btnDone: 'CONCLUÍDO'
+        btnDone: 'CONCLUÍDO',
+        dataHubTitle: 'Central de Dados & Repositório do Planejamento',
+        dataHubSub: 'Recursos compartilhados para QGIS, Power BI e AutoCAD',
+        tabGeo: '1. CAMADAS GEO (QGIS)',
+        tabTables: '2. TABELAS (POWER BI)',
+        tabCad: '3. BIBLIOTECA CAD',
+        tabFrentes: '4. COLETA PROGRAMADA'
       },
       en: {
         suiteSubtitle: 'OPERATIONAL PLANNING',
         statusConnected: 'SYSTEMS ONLINE',
+        btnDataHub: 'TEAM DATA HUB',
         installApp: 'INSTALL APP',
         orderLabel: 'SORT BY',
         searchPlaceholder: 'Search apps...',
@@ -595,13 +980,15 @@
         catGeo: 'GIS & Routes (QGIS)',
         catCampo: 'Field Inspection',
         catCirio: 'Círio Operation',
-        sectionProduction: 'PRODUCTION OPERATIONAL SYSTEMS',
-        sectionUpcoming: 'UPCOMING & DATA MODULES',
+        catPlan: 'Planning & Engineering',
+        sectionProduction: 'PRODUCTION OPERATIONAL SYSTEMS (ONLINE)',
+        sectionUpcoming: 'UPCOMING MODULES & ENGINEERING',
         badgeOnline: 'ONLINE',
         badgeIntegration: 'INTEGRATING',
         badgeDev: 'DEVELOPMENT',
         btnOpen: 'OPEN',
         btnStatus: 'STATUS',
+        btnVerCamadas: 'VIEW LAYERS',
         mapaSubtitle: 'Operational routes & sectors',
         mapaDesc: 'Waste collection, weeding and scraping sectors synchronized with city road network.',
         fotoSubtitle: 'Evidence & inspection',
@@ -612,10 +999,18 @@
         cirioDesc: 'Real-time monitoring of cleanup teams, waste disposal points and routes.',
         dashCirioSubtitle: 'Operational Metrics',
         dashCirioDesc: 'Waste volume metrics, cleared streets and active field crews.',
-        auraSubtitle: 'Weighing & Transfer Station',
-        auraDesc: 'Truck weighing scale logs and final waste disposal sync.',
+        qgisSyncSubtitle: 'Real-Time Sync',
+        qgisSyncDesc: 'Stream vector layers directly into QGIS desktop without manual shapefile exports.',
+        pdfSubtitle: 'Monthly Audit Reports',
+        pdfDesc: 'Generate standardized municipal audit PDFs with before/after photos and GPS stamps.',
+        ccoSubtitle: 'Operations Control Center',
+        ccoDesc: 'Fullscreen TV display rotating through live maps, telemetry metrics and crew alerts.',
+        auraSubtitle: 'Truck Scale Weighing',
+        auraDesc: 'Truck scale weighing logs, disposal tickets and final transfer sync.',
         rendSubtitle: 'Man-Hour Estimation',
-        rendDesc: 'Crew requirements calculated per linear meter of scraping and curbs.',
+        rendDesc: 'Parametric crew requirements per linear meter of curb scraping and weeding.',
+        botaSubtitle: 'Debris Container Tracking',
+        botaDesc: 'Stationary dumpster tracking, idle time and inert waste logistics.',
         footerDept: 'OPERATIONAL PLANNING',
         footerSecure: 'SECURE ENVIRONMENT (HTTPS)',
         settingsTitle: 'Settings',
@@ -624,16 +1019,23 @@
         cfgQgisSync: 'QGIS & DATA SYNC',
         cfgQgisAuto: 'Auto-sync WFS/GeoJSON layers',
         cfgNotifyFrentes: 'Notify when new work fronts open',
-        cfgPwaTitle: 'DEVICE INSTALLATION (PWA)',
+        cfgPwaTitle: 'DEVICE INSTALLATION',
         cfgPwaDesc: 'Install this portal on your phone or PC home screen for standalone access.',
         btnInstallPwa: 'INSTALL APP',
         cfgContact: 'PLANNING DEPARTMENT',
         btnCancel: 'Close',
-        btnDone: 'DONE'
+        btnDone: 'DONE',
+        dataHubTitle: 'Planning Data Hub & Repository',
+        dataHubSub: 'Shared resources for QGIS, Power BI and AutoCAD',
+        tabGeo: '1. GIS LAYERS (QGIS)',
+        tabTables: '2. TABLES (POWER BI)',
+        tabCad: '3. CAD LIBRARY',
+        tabFrentes: '4. SCHEDULED COLLECTION'
       },
       es: {
         suiteSubtitle: 'PLANIFICACIÓN OPERATIVA',
         statusConnected: 'SISTEMAS ACTIVOS',
+        btnDataHub: 'DATOS DEL EQUIPO',
         installApp: 'INSTALAR APP',
         orderLabel: 'ORDENAR',
         searchPlaceholder: 'Buscar aplicaciones...',
@@ -641,13 +1043,15 @@
         catGeo: 'Geo & Rutas (QGIS)',
         catCampo: 'Fiscalización & Campo',
         catCirio: 'Operativo Círio',
-        sectionProduction: 'SISTEMAS OPERATIVOS EN PRODUCCIÓN',
-        sectionUpcoming: 'MÓDULOS EN HOMOLOGACIÓN',
+        catPlan: 'Planificación & Ingeniería',
+        sectionProduction: 'SISTEMAS OPERATIVOS EN PRODUCCIÓN (ONLINE)',
+        sectionUpcoming: 'MÓDULOS EN HOMOLOGACIÓN (PRÓXIMAMENTE)',
         badgeOnline: 'EN LÍNEA',
         badgeIntegration: 'EN INTEGRACIÓN',
         badgeDev: 'DESARROLLO',
         btnOpen: 'ABRIR',
         btnStatus: 'ESTADO',
+        btnVerCamadas: 'VER CAPAS',
         mapaSubtitle: 'Rutas y frentes operativas',
         mapaDesc: 'Sectores de recolección y desmalezado sincronizados con la red vial y shapefiles.',
         fotoSubtitle: 'Evidencias y fiscalización',
@@ -658,24 +1062,38 @@
         cirioDesc: 'Control de frentes de trabajo y puntos de descarga durante el evento.',
         dashCirioSubtitle: 'Métricas de la Operación',
         dashCirioDesc: 'Monitoreo de toneladas recogidas, vías despejadas y personal activo.',
-        auraSubtitle: 'Pesaje y Transferencia',
-        auraDesc: 'Sincronización de básculas de camiones y disposición final de residuos.',
+        qgisSyncSubtitle: 'Sincronización en Tiempo Real',
+        qgisSyncDesc: 'Carga de capas vectoriales en QGIS sin necesidad de exportar shapefiles.',
+        pdfSubtitle: 'Informes Técnicos Mensuales',
+        pdfDesc: 'Generación de informes oficiales con fotos antes/después y sello GPS pericial.',
+        ccoSubtitle: 'Centro de Control Operativo',
+        ccoDesc: 'Pantalla completa para salas de control con rotación de mapas y métricas.',
+        auraSubtitle: 'Báscula de Pesaje',
+        auraDesc: 'Sincronización de pesaje de camiones, boletos y disposición final.',
         rendSubtitle: 'Cálculo Hombre-Hora',
         rendDesc: 'Estimación de personal necesario por metro lineal de desmalezado.',
+        botaSubtitle: 'Contenedores de Escombros',
+        botaDesc: 'Seguimiento de contenedores de escombros, tiempo de estancia y logística.',
         footerDept: 'PLANIFICACIÓN OPERATIVA',
         footerSecure: 'AMBIENTE SEGURO (HTTPS)',
         settingsTitle: 'Configuración',
         cfgLanguage: 'IDIOMA',
         cfgAppearance: 'APARIENCIA',
-        cfgQgisSync: 'SINCRONIZACIÓN QGIS',
+        cfgQgisSync: 'SINCRONIZAÇÃO QGIS',
         cfgQgisAuto: 'Actualizar capas WFS/GeoJSON',
         cfgNotifyFrentes: 'Avisar nuevos frentes de trabajo',
-        cfgPwaTitle: 'INSTALACIÓN EN DISPOSITIVO (PWA)',
+        cfgPwaTitle: 'INSTALACIÓN EN DISPOSITIVO',
         cfgPwaDesc: 'Instale este portal en su pantalla de inicio para acceso directo.',
         btnInstallPwa: 'INSTALAR APLICACIÓN',
         cfgContact: 'DEPARTAMENTO DE PLANIFICACIÓN',
         btnCancel: 'Cerrar',
-        btnDone: 'LISTO'
+        btnDone: 'LISTO',
+        dataHubTitle: 'Centro de Datos del Departamento',
+        dataHubSub: 'Recursos compartidos para QGIS, Power BI y AutoCAD',
+        tabGeo: '1. CAPAS GEO (QGIS)',
+        tabTables: '2. TABLAS (POWER BI)',
+        tabCad: '3. BIBLIOTECA CAD',
+        tabFrentes: '4. RECOLECCIÓN PROGRAMADA'
       }
     };
 
@@ -697,7 +1115,35 @@
       });
     }
 
-    // Gestor de Tema / Aparência
+    // Modal Central de Dados
+    function toggleDataHubModal(show) {
+      const modal = document.getElementById('dataHubModal');
+      if (show) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      } else {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    // Alternar Abas da Central de Dados
+    function switchDataTab(tab) {
+      const tabs = ['geo', 'tables', 'cad', 'frentes'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1) + 'Btn');
+        const content = document.getElementById('tabContent' + t.charAt(0).toUpperCase() + t.slice(1));
+        if (t === tab) {
+          btn.className = 'py-2.5 px-3 border-b-2 border-craft-text dark:border-craft-darkText font-bold text-craft-text dark:text-craft-darkText';
+          content.classList.remove('hidden');
+        } else {
+          btn.className = 'py-2.5 px-3 border-b-2 border-transparent text-craft-muted hover:text-craft-text';
+          content.classList.add('hidden');
+        }
+      });
+    }
+
+    // Gestor de Tema
     function setTheme(mode) {
       const html = document.documentElement;
       const btnSystem = document.getElementById('themeSystemBtn');
@@ -768,7 +1214,7 @@
       }
     }
 
-    // Alternar Visualização (Grid vs Lista)
+    // Alternar Visualização
     function setViewMode(mode) {
       const container = document.getElementById('appsContainer');
       const gridBtn = document.getElementById('viewGridBtn');
