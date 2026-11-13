@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CBL - Planejamento Operacional</title>
+  
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#18181b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="CBL Planejamento" />
+
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            craft: {
+              bg: '#f7f6f2',
+              card: '#fcfbf9',
+              border: '#e5e3dc',
+              borderHover: '#c7c5bc',
+              text: '#2b2a27',
+              muted: '#73716b',
+              btn: '#f3f2ee',
+              btnHover: '#eae7df',
+              btnActive: '#dfdcd2',
+              darkBg: '#18181b',
+              darkCard: '#222225',
+              darkBorder: '#323236',
+              darkBorderHover: '#4f4f54',
+              darkText: '#f4f4f5',
+              darkMuted: '#a1a1aa',
+              darkBtn: '#2a2a2e',
+              darkBtnHover: '#35353a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .font-mono-tech {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d8d6cd; border-radius: 3px; }
+    .dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-craft-bg text-craft-text dark:bg-craft-darkBg dark:text-craft-darkText">
+
+  <!-- ==================== HEADER INSTITUCIONAL ==================== -->
+  <header class="border-b border-craft-border dark:border-craft-darkBorder bg-[#fbfaf7] dark:bg-[#1c1c1f] px-4 sm:px-6 py-2.5 flex items-center justify-between sticky top-0 z-20">
+    <div class="flex items-center space-x-3 sm:space-x-4">
+      <div class="flex items-center space-x-2">
+        <span class="font-extrabold tracking-wider text-base uppercase">CBL</span>
+        <span class="text-xs text-craft-muted dark:text-craft-darkMuted font-mono-tech tracking-widest uppercase border-l border-craft-border dark:border-craft-darkBorder pl-2 sm:pl-3" data-i18n="suiteSubtitle">
+          PLANEJAMENTO OPERACIONAL
+        </span>
+      </div>
+    </div>
+
+    <!-- Controles da Direita -->
+    <div class="flex items-center space-x-3 text-sm">
+      <span class="hidden sm:inline-flex items-center text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted border border-craft-border dark:border-craft-darkBorder px-2 py-0.5 rounded">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-2"></span>
+        <span data-i18n="statusConnected">SISTEMAS OPERANDO</span>
+      </span>
+
+      <!-- Botão de Instalar PWA -->
+      <button id="btnInstallPwa" onclick="triggerPwaPrompt()" class="hidden items-center space-x-1.5 px-2.5 py-1 text-xs border border-craft-border dark:border-craft-darkBorder hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover rounded font-mono-tech text-xs transition-colors">
+        <i class="fa-solid fa-download text-[11px]"></i>
+        <span data-i18n="installApp">INSTALAR APP</span>
+      </button>
+
+      <!-- Botão Configurações -->
+      <button onclick="toggleSettingsModal(true)" class="p-1.5 rounded hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover text-craft-muted hover:text-craft-text dark:text-craft-darkMuted dark:hover:text-craft-darkText transition-colors" title="Configurações">
+        <i class="fa-solid fa-gear"></i>
+      </button>
+
+      <div class="hidden sm:flex items-center space-x-1 border-l border-craft-border dark:border-craft-darkBorder pl-2 text-craft-muted dark:text-craft-darkMuted">
+        <button class="p-1 hover:text-craft-text dark:hover:text-craft-darkText"><i class="fa-regular fa-window-minimize text-xs"></i></button>
+        <button class="p-1 hover:text-craft-text dark:hover:text-craft-darkText"><i class="fa-regular fa-square text-xs"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== BARRA DE FERRAMENTAS / FILTROS ==================== -->
+  <nav class="border-b border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg px-4 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-3 text-xs">
+    <div class="flex items-center space-x-2">
+      <button onclick="window.location.reload()" class="p-1.5 rounded hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover text-craft-muted transition-colors" title="Recarregar">
+        <i class="fa-solid fa-rotate-right"></i>
+      </button>
+      <span class="text-craft-muted dark:text-craft-darkMuted font-mono-tech text-[11px] hidden sm:inline">
+        cblplanejamento.com.br
+      </span>
+    </div>
+    
+    <div class="flex items-center space-x-2 sm:space-x-3 w-full sm:w-auto justify-between sm:justify-end">
+      <!-- Seletor de Categoria -->
+      <div class="flex items-center space-x-1 sm:space-x-2">
+        <span class="text-craft-muted dark:text-craft-darkMuted uppercase tracking-wider text-[10px] font-mono-tech hidden md:inline" data-i18n="orderLabel">ORDENAR</span>
+        <select id="categoryFilter" onchange="applyFilters()" class="bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded px-2 py-1 text-xs text-craft-text dark:text-craft-darkText outline-none cursor-pointer">
+          <option value="todos" data-i18n="catAll">Todos os Aplicativos</option>
+          <option value="geo" data-i18n="catGeo">Geo & Rotas (QGIS)</option>
+          <option value="campo" data-i18n="catCampo">Fiscalização & Campo</option>
+          <option value="cirio" data-i18n="catCirio">Operação Círio</option>
+        </select>
+      </div>
+
+      <!-- Barra de Busca -->
+      <div class="relative flex-1 sm:w-56 max-w-xs">
+        <input id="searchInput" oninput="applyFilters()" type="text" placeholder="Buscar aplicativos..." data-i18n-placeholder="searchPlaceholder" class="w-full border border-craft-border dark:border-craft-darkBorder rounded px-3 py-1 pr-8 text-xs bg-white dark:bg-craft-darkCard text-craft-text dark:text-craft-darkText focus:outline-none focus:border-zinc-500 shadow-inner" />
+        <i class="fa-solid fa-magnifying-glass absolute right-2.5 top-2 text-craft-muted text-xs"></i>
+      </div>
+
+      <!-- Alternador Grid / Lista -->
+      <div class="hidden sm:flex border border-craft-border dark:border-craft-darkBorder rounded overflow-hidden">
+        <button id="viewGridBtn" onclick="setViewMode('grid')" class="px-2 py-1 bg-craft-btnHover dark:bg-craft-darkBtnHover text-craft-text dark:text-craft-darkText"><i class="fa-solid fa-table-cells-large"></i></button>
+        <button id="viewListBtn" onclick="setViewMode('list')" class="px-2 py-1 bg-craft-card dark:bg-craft-darkCard text-craft-muted hover:text-craft-text"><i class="fa-solid fa-list"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== CONTEÚDO DOS PROJETOS ==================== -->
+  <main class="flex-1 px-4 sm:px-8 py-5 max-w-7xl mx-auto w-full">
+    
+    <div class="mb-3 text-[11px] font-mono-tech uppercase tracking-wider text-craft-muted dark:text-craft-darkMuted flex items-center space-x-2">
+      <span data-i18n="sectionProduction">SISTEMAS OPERACIONAIS EM PRODUÇÃO</span>
+      <span class="h-[1px] bg-craft-border dark:bg-craft-darkBorder flex-1"></span>
+    </div>
+
+    <!-- Grid de Aplicativos -->
+    <div id="appsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+
+      <!-- PROJETO 1: MapaBL (QGIS / Setores) -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder hover:border-craft-borderHover dark:hover:border-craft-darkBorderHover rounded p-4 flex flex-col justify-between shadow-sm transition-all" data-category="geo" data-name="mapabl rotas capinacao raspagem qgis setores mapas">
+        <div>
+          <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted mb-3">
+            <span>V2.4.0</span>
+            <a href="https://mapablv2.vercel.app/" target="_blank" class="hover:underline flex items-center space-x-1 text-craft-text dark:text-craft-darkText">
+              <span data-i18n="badgeOnline">ONLINE</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+            </a>
+          </div>
+          
+          <div class="flex items-start space-x-3 mb-2.5">
+            <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-text dark:text-craft-darkText text-lg shrink-0">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <h3 class="font-bold text-sm leading-none">MapaBL</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted dark:text-craft-darkMuted">QGIS</span>
+              </div>
+              <p class="text-xs text-craft-muted dark:text-craft-darkMuted mt-0.5" data-i18n="mapaSubtitle">Rotas e frentes operacionais</p>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-craft-muted dark:text-craft-darkMuted line-clamp-2 mb-3 leading-relaxed" data-i18n="mapaDesc">
+            Setores de coleta, raspagem e capinação sincronizados com a malha viária e shapefiles.
+          </p>
+          <div class="text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted">mapas.cblplanejamento.com.br</div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
+          <a href="https://mapablv2.vercel.app/" target="_blank" class="flex-1 text-center py-1.5 text-xs font-bold font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover text-craft-text dark:text-craft-darkText uppercase transition-colors" data-i18n="btnOpen">
+            ABRIR
+          </a>
+          <button onclick="showAppDetails('mapabl')" class="px-2.5 py-1.5 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover text-craft-muted" title="Info">
+            <i class="fa-solid fa-ellipsis"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- PROJETO 2: Relatório Fotográfico -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder hover:border-craft-borderHover dark:hover:border-craft-darkBorderHover rounded p-4 flex flex-col justify-between shadow-sm transition-all" data-category="campo" data-name="relatorio fotografico fotos evidencias capinacao entulho prefeitura fiscalizacao">
+        <div>
+          <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted mb-3">
+            <span>V2.1.2</span>
+            <a href="https://relatoriofotograficobelemlimpav2.vercel.app/" target="_blank" class="hover:underline flex items-center space-x-1 text-craft-text dark:text-craft-darkText">
+              <span data-i18n="badgeOnline">ONLINE</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+            </a>
+          </div>
+
+          <div class="flex items-start space-x-3 mb-2.5">
+            <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-text dark:text-craft-darkText text-lg shrink-0">
+              <i class="fa-solid fa-camera"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <h3 class="font-bold text-sm leading-none">Relatório Fotográfico</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted dark:text-craft-darkMuted">CAMPO</span>
+              </div>
+              <p class="text-xs text-craft-muted dark:text-craft-darkMuted mt-0.5" data-i18n="fotoSubtitle">Evidências e fiscalização</p>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-craft-muted dark:text-craft-darkMuted line-clamp-2 mb-3 leading-relaxed" data-i18n="fotoDesc">
+            Registro com data, coordenadas e fotografias antes/depois para prestação de contas à Prefeitura.
+          </p>
+          <div class="text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted">fotos.cblplanejamento.com.br</div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
+          <a href="https://relatoriofotograficobelemlimpav2.vercel.app/" target="_blank" class="flex-1 text-center py-1.5 text-xs font-bold font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover text-craft-text dark:text-craft-darkText uppercase transition-colors" data-i18n="btnOpen">
+            ABRIR
+          </a>
+          <button onclick="showAppDetails('fotos')" class="px-2.5 py-1.5 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover text-craft-muted" title="Info">
+            <i class="fa-solid fa-ellipsis"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- PROJETO 3: Instalação de Papeleiras (NOVO!) -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder hover:border-craft-borderHover dark:hover:border-craft-borderHover rounded p-4 flex flex-col justify-between shadow-sm transition-all" data-category="campo" data-name="instalacao papeleiras lixeiras logradouros mapeamento campo">
+        <div>
+          <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted mb-3">
+            <span>V1.0.2</span>
+            <a href="https://papeleirasbelemlimpa.vercel.app/" target="_blank" class="hover:underline flex items-center space-x-1 text-craft-text dark:text-craft-darkText">
+              <span data-i18n="badgeOnline">ONLINE</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+            </a>
+          </div>
+
+          <div class="flex items-start space-x-3 mb-2.5">
+            <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-text dark:text-craft-darkText text-lg shrink-0">
+              <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <h3 class="font-bold text-sm leading-none">Papeleiras</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted dark:text-craft-darkMuted">CAMPO</span>
+              </div>
+              <p class="text-xs text-craft-muted dark:text-craft-darkMuted mt-0.5" data-i18n="papeleirasSubtitle">Mapeamento e Instalação</p>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-craft-muted dark:text-craft-darkMuted line-clamp-2 mb-3 leading-relaxed" data-i18n="papeleirasDesc">
+            Controle de instalação, coordenadas geográficas e conservação de papeleiras nos logradouros de Belém.
+          </p>
+          <div class="text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted">papeleiras.cblplanejamento.com.br</div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
+          <a href="https://papeleirasbelemlimpa.vercel.app/" target="_blank" class="flex-1 text-center py-1.5 text-xs font-bold font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover text-craft-text dark:text-craft-darkText uppercase transition-colors" data-i18n="btnOpen">
+            ABRIR
+          </a>
+          <button onclick="showAppDetails('papeleiras')" class="px-2.5 py-1.5 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover text-craft-muted" title="Info">
+            <i class="fa-solid fa-ellipsis"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- PROJETO 4: Belém Limpa Círio 2026 -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder hover:border-craft-borderHover dark:hover:border-craft-darkBorderHover rounded p-4 flex flex-col justify-between shadow-sm transition-all" data-category="cirio" data-name="belemlimpa cirio 2026 operacao grandes eventos mutirao limpeza trajeto">
+        <div>
+          <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted mb-3">
+            <span>V1.0.8</span>
+            <a href="https://belemlimpacirio2026.vercel.app/" target="_blank" class="hover:underline flex items-center space-x-1 text-craft-text dark:text-craft-darkText">
+              <span data-i18n="badgeOnline">ONLINE</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+            </a>
+          </div>
+
+          <div class="flex items-start space-x-3 mb-2.5">
+            <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-text dark:text-craft-darkText text-lg shrink-0">
+              <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <h3 class="font-bold text-sm leading-none">Círio 2026</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted dark:text-craft-darkMuted">OPERAÇÃO</span>
+              </div>
+              <p class="text-xs text-craft-muted dark:text-craft-darkMuted mt-0.5" data-i18n="cirioSubtitle">Mutirão & Frentes de Apoio</p>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-craft-muted dark:text-craft-darkMuted line-clamp-2 mb-3 leading-relaxed" data-i18n="cirioDesc">
+            Controle das frentes de serviço no trajeto oficial, pontos de coleta e descarte do evento.
+          </p>
+          <div class="text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted">cirio.cblplanejamento.com.br</div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
+          <a href="https://belemlimpacirio2026.vercel.app/" target="_blank" class="flex-1 text-center py-1.5 text-xs font-bold font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover text-craft-text dark:text-craft-darkText uppercase transition-colors" data-i18n="btnOpen">
+            ABRIR
+          </a>
+          <button onclick="showAppDetails('cirio')" class="px-2.5 py-1.5 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover text-craft-muted" title="Info">
+            <i class="fa-solid fa-ellipsis"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- PROJETO 5: Dashboard Operacional Círio -->
+      <div class="app-card bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder hover:border-craft-borderHover dark:hover:border-craft-darkBorderHover rounded p-4 flex flex-col justify-between shadow-sm transition-all" data-category="cirio" data-name="dashboard painel cirio 2026 indicadores estatisticas metricas pesagem">
+        <div>
+          <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted mb-3">
+            <span>V1.0.0</span>
+            <a href="https://dashboardcirio2026.vercel.app/" target="_blank" class="hover:underline flex items-center space-x-1 text-craft-text dark:text-craft-darkText">
+              <span data-i18n="badgeOnline">ONLINE</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+            </a>
+          </div>
+
+          <div class="flex items-start space-x-3 mb-2.5">
+            <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-text dark:text-craft-darkText text-lg shrink-0">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <h3 class="font-bold text-sm leading-none">Painel Círio</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted dark:text-craft-darkMuted">DASHBOARD</span>
+              </div>
+              <p class="text-xs text-craft-muted dark:text-craft-darkMuted mt-0.5" data-i18n="dashCirioSubtitle">Métricas da Operação</p>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-craft-muted dark:text-craft-darkMuted line-clamp-2 mb-3 leading-relaxed" data-i18n="dashCirioDesc">
+            Acompanhamento de volume de resíduos recolhidos, rotas liberadas e equipes ativas no Círio.
+          </p>
+          <div class="text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted">dashboardcirio2026.vercel.app</div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
+          <a href="https://dashboardcirio2026.vercel.app/" target="_blank" class="flex-1 text-center py-1.5 text-xs font-bold font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover text-craft-text dark:text-craft-darkText uppercase transition-colors" data-i18n="btnOpen">
+            ABRIR
+          </a>
+          <button onclick="showAppDetails('dashcirio')" class="px-2.5 py-1.5 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover text-craft-muted" title="Info">
+            <i class="fa-solid fa-ellipsis"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Seção: Homologação e Engenharia -->
+    <div class="mb-3 text-[11px] font-mono-tech uppercase tracking-wider text-craft-muted dark:text-craft-darkMuted flex items-center space-x-2">
+      <span data-i18n="sectionUpcoming">MÓDULOS EM HOMOLOGAÇÃO & DADOS</span>
+      <span class="h-[1px] bg-craft-border dark:bg-craft-darkBorder flex-1"></span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <!-- Card: Aterro do Aurá (Power BI) -->
+      <div class="bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded p-4 flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted mb-3">
+            <span>V0.9.0</span>
+            <span class="font-bold text-craft-muted" data-i18n="badgeIntegration">EM INTEGRAÇÃO</span>
+          </div>
+          <div class="flex items-start space-x-3 mb-2.5">
+            <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-muted text-lg shrink-0">
+              <i class="fa-solid fa-dumpster"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <h3 class="font-bold text-sm leading-none">Aterro do Aurá</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted">POWER BI</span>
+              </div>
+              <p class="text-xs text-craft-muted mt-0.5" data-i18n="auraSubtitle">Pesagem e Transbordo</p>
+            </div>
+          </div>
+          <p class="text-[11px] text-craft-muted line-clamp-2 mb-3" data-i18n="auraDesc">
+            Sincronização de pesagem de caminhões, básculas e destinação final de resíduos.
+          </p>
+          <div class="text-[10px] font-mono-tech text-craft-muted">Aguardando chave do TI</div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
+          <button onclick="alert('Módulo de pesagem do Aurá em fase de homologação junto ao banco corporativo.')" class="flex-1 text-center py-1.5 text-xs font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn text-craft-muted uppercase cursor-pointer hover:bg-craft-btnHover" data-i18n="btnStatus">
+            STATUS
+          </button>
+        </div>
+      </div>
+
+      <!-- Card: Calculadora de Metragem de Capinação -->
+      <div class="bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded p-4 flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted mb-3">
+            <span>V0.5.0</span>
+            <span class="font-bold text-craft-muted" data-i18n="badgeDev">DESENVOLVIMENTO</span>
+          </div>
+          <div class="flex items-start space-x-3 mb-2.5">
+            <div class="w-11 h-11 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-bg dark:bg-craft-darkBg flex items-center justify-center text-craft-muted text-lg shrink-0">
+              <i class="fa-solid fa-calculator"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <h3 class="font-bold text-sm leading-none">Rendimento</h3>
+                <span class="text-[9px] font-mono-tech uppercase border border-craft-border dark:border-craft-darkBorder px-1 py-0.2 rounded text-craft-muted">ENGENHARIA</span>
+              </div>
+              <p class="text-xs text-craft-muted mt-0.5" data-i18n="rendSubtitle">Cálculo de Homem-Hora</p>
+            </div>
+          </div>
+          <p class="text-[11px] text-craft-muted line-clamp-2 mb-3" data-i18n="rendDesc">
+            Estimativa de equipes necessárias por metro linear de raspagem e sarjeta.
+          </p>
+          <div class="text-[10px] font-mono-tech text-craft-muted">Planejamento</div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
+          <button onclick="alert('Calculadora de rendimento operacional em formulação pelo planejamento.')" class="flex-1 text-center py-1.5 text-xs font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn text-craft-muted uppercase cursor-pointer hover:bg-craft-btnHover" data-i18n="btnStatus">
+            STATUS
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ==================== RODAPÉ INSTITUCIONAL ==================== -->
+  <footer class="border-t border-craft-border dark:border-craft-darkBorder bg-[#fbfaf7] dark:bg-[#1c1c1f] px-4 sm:px-6 py-2.5 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono-tech text-craft-muted dark:text-craft-darkMuted gap-2">
+    <div class="flex items-center space-x-2">
+      <span class="font-bold text-craft-text dark:text-craft-darkText">CONCESSIONÁRIA BELÉM LIMPA</span>
+      <span>&bull;</span>
+      <span data-i18n="footerDept">PLANEJAMENTO OPERACIONAL</span>
+    </div>
+    <div class="flex items-center space-x-3 text-[10px]">
+      <span data-i18n="footerSecure"><i class="fa-solid fa-lock text-[9px] mr-1"></i> AMBIENTE SEGURO (HTTPS)</span>
+      <span>&bull;</span>
+      <span>v1.0.0</span>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL DE CONFIGURAÇÕES ==================== -->
+  <div id="settingsModal" class="fixed inset-0 bg-black/50 backdrop-blur-[1px] hidden items-center justify-center z-50 p-4">
+    <div class="bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[90vh]">
+      
+      <!-- Cabeçalho do Modal -->
+      <div class="border-b border-craft-border dark:border-craft-darkBorder px-6 py-4 flex items-center justify-between bg-craft-bg dark:bg-craft-darkBg">
+        <div class="flex items-center space-x-3">
+          <div class="w-7 h-7 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-card dark:bg-craft-darkCard flex items-center justify-center font-bold text-xs">
+            C
+          </div>
+          <div>
+            <h2 class="font-bold text-base leading-tight" data-i18n="settingsTitle">Configurações</h2>
+            <p class="text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted uppercase">PORTAL DO PLANEJAMENTO v1.0</p>
+          </div>
+        </div>
+        <button onclick="toggleSettingsModal(false)" class="text-craft-muted hover:text-craft-text dark:hover:text-craft-darkText">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Corpo do Modal -->
+      <div class="p-6 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+        
+        <!-- Coluna Esquerda -->
+        <div class="space-y-4">
+          <!-- Idioma -->
+          <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21]">
+            <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted mb-1.5" data-i18n="cfgLanguage">IDIOMA</label>
+            <select id="languageSelect" onchange="changeLanguage(this.value)" class="w-full bg-craft-bg dark:bg-craft-darkBg border border-craft-border dark:border-craft-darkBorder rounded p-1.5 text-xs text-craft-text dark:text-craft-darkText outline-none cursor-pointer">
+              <option value="pt">Português (Brasil)</option>
+              <option value="en">English (US)</option>
+              <option value="es">Español</option>
+            </select>
+          </div>
+
+          <!-- Aparência / Tema Funcional -->
+          <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21]">
+            <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted mb-2" data-i18n="cfgAppearance">APARÊNCIA</label>
+            <div class="grid grid-cols-3 gap-1 border border-craft-border dark:border-craft-darkBorder rounded p-0.5 bg-craft-bg dark:bg-craft-darkBg text-[11px] font-mono-tech text-center">
+              <button id="themeSystemBtn" onclick="setTheme('system')" class="py-1 rounded transition-colors">SISTEMA</button>
+              <button id="themeLightBtn" onclick="setTheme('light')" class="py-1 rounded transition-colors">CLARO</button>
+              <button id="themeDarkBtn" onclick="setTheme('dark')" class="py-1 rounded transition-colors">ESCURO</button>
+            </div>
+          </div>
+
+          <!-- Opções Operacionais -->
+          <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21] space-y-2">
+            <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted" data-i18n="cfgQgisSync">SINCRONIZAÇÃO QGIS & SERVIÇOS</label>
+            <div class="flex items-center justify-between text-[11px]">
+              <span data-i18n="cfgQgisAuto">Atualizar camadas WFS/GeoJSON</span>
+              <input type="checkbox" checked class="accent-zinc-700 cursor-pointer" />
+            </div>
+            <div class="flex items-center justify-between text-[11px]">
+              <span data-i18n="cfgNotifyFrentes">Avisar novas frentes de capinação</span>
+              <input type="checkbox" checked class="accent-zinc-700 cursor-pointer" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna Direita -->
+        <div class="space-y-4">
+          <!-- Aplicativo no Celular (PWA) -->
+          <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21] space-y-2">
+            <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted" data-i18n="cfgPwaTitle">INSTALAÇÃO NO DISPOSITIVO (PWA)</label>
+            <p class="text-[11px] text-craft-muted dark:text-craft-darkMuted" data-i18n="cfgPwaDesc">
+              Instale este portal na tela inicial do celular ou desktop para acessar sem barra de navegação.
+            </p>
+            <button onclick="triggerPwaPrompt()" class="w-full py-1.5 border border-craft-border dark:border-craft-darkBorder hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover rounded font-bold font-mono-tech uppercase tracking-wider text-[11px] transition-colors" data-i18n="btnInstallPwa">
+              INSTALAR APLICATIVO
+            </button>
+          </div>
+
+          <!-- Contato do Setor -->
+          <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21] space-y-1">
+            <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted" data-i18n="cfgContact">SETOR DE PLANEJAMENTO</label>
+            <p class="text-[11px] font-bold">Consórcio Belém Limpa</p>
+            <p class="text-[11px] text-craft-muted font-mono-tech">planejamento@cblplanejamento.com.br</p>
+            <p class="text-[10px] text-craft-muted">Ananindeua / Belém &bull; Pará</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Rodapé do Modal -->
+      <div class="border-t border-craft-border dark:border-craft-darkBorder px-6 py-3 flex items-center justify-between bg-craft-bg dark:bg-craft-darkBg">
+        <button onclick="toggleSettingsModal(false)" class="px-4 py-1.5 border border-craft-border dark:border-craft-darkBorder rounded text-xs hover:bg-craft-btnHover transition-colors" data-i18n="btnCancel">
+          Fechar
+        </button>
+        <button onclick="toggleSettingsModal(false)" class="px-5 py-1.5 bg-craft-text text-craft-card dark:bg-craft-darkText dark:text-craft-darkBg rounded text-xs font-bold font-mono-tech uppercase tracking-wider transition-colors" data-i18n="btnDone">
+          CONCLUÍDO
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script>
+    // Dicionário de Idiomas
+    const translations = {
+      pt: {
+        suiteSubtitle: 'PLANEJAMENTO OPERACIONAL',
+        statusConnected: 'SISTEMAS OPERANDO',
+        installApp: 'INSTALAR APP',
+        orderLabel: 'ORDENAR',
+        searchPlaceholder: 'Buscar aplicativos...',
+        catAll: 'Todos os Aplicativos',
+        catGeo: 'Geo & Rotas (QGIS)',
+        catCampo: 'Fiscalização & Campo',
+        catCirio: 'Operação Círio',
+        sectionProduction: 'SISTEMAS OPERACIONAIS EM PRODUÇÃO',
+        sectionUpcoming: 'MÓDULOS EM HOMOLOGAÇÃO & DADOS',
+        badgeOnline: 'ONLINE',
+        badgeIntegration: 'EM INTEGRAÇÃO',
+        badgeDev: 'DESENVOLVIMENTO',
+        btnOpen: 'ABRIR',
+        btnStatus: 'STATUS',
+        mapaSubtitle: 'Rotas e frentes operacionais',
+        mapaDesc: 'Setores de coleta, raspagem e capinação sincronizados com a malha viária e shapefiles.',
+        fotoSubtitle: 'Evidências e fiscalização',
+        fotoDesc: 'Registro com data, coordenadas e fotografias antes/depois para prestação de contas à Prefeitura.',
+        papeleirasSubtitle: 'Mapeamento e Instalação',
+        papeleirasDesc: 'Controle de instalação, coordenadas geográficas e conservação de papeleiras nos logradouros de Belém.',
+        cirioSubtitle: 'Mutirão & Frentes de Apoio',
+        cirioDesc: 'Controle das frentes de serviço no trajeto oficial, pontos de coleta e descarte do evento.',
+        dashCirioSubtitle: 'Métricas da Operação',
+        dashCirioDesc: 'Acompanhamento de volume de resíduos recolhidos, rotas liberadas e equipes ativas no Círio.',
+        auraSubtitle: 'Pesagem e Transbordo',
+        auraDesc: 'Sincronização de pesagem de caminhões, básculas e destinação final de resíduos.',
+        rendSubtitle: 'Cálculo de Homem-Hora',
+        rendDesc: 'Estimativa de equipes necessárias por metro linear de raspagem e sarjeta.',
+        footerDept: 'PLANEJAMENTO OPERACIONAL',
+        footerSecure: 'AMBIENTE SEGURO (HTTPS)',
+        settingsTitle: 'Configurações',
+        cfgLanguage: 'IDIOMA',
+        cfgAppearance: 'APARÊNCIA',
+        cfgQgisSync: 'SINCRONIZAÇÃO QGIS & SERVIÇOS',
+        cfgQgisAuto: 'Atualizar camadas WFS/GeoJSON',
+        cfgNotifyFrentes: 'Avisar novas frentes de capinação',
+        cfgPwaTitle: 'INSTALAÇÃO NO DISPOSITIVO (PWA)',
+        cfgPwaDesc: 'Instale este portal na tela inicial do celular ou desktop para acessar sem barra de navegação.',
+        btnInstallPwa: 'INSTALAR APLICATIVO',
+        cfgContact: 'SETOR DE PLANEJAMENTO',
+        btnCancel: 'Fechar',
+        btnDone: 'CONCLUÍDO'
+      },
+      en: {
+        suiteSubtitle: 'OPERATIONAL PLANNING',
+        statusConnected: 'SYSTEMS ONLINE',
+        installApp: 'INSTALL APP',
+        orderLabel: 'SORT BY',
+        searchPlaceholder: 'Search apps...',
+        catAll: 'All Applications',
+        catGeo: 'GIS & Routes (QGIS)',
+        catCampo: 'Field Inspection',
+        catCirio: 'Círio Operation',
+        sectionProduction: 'PRODUCTION OPERATIONAL SYSTEMS',
+        sectionUpcoming: 'UPCOMING & DATA MODULES',
+        badgeOnline: 'ONLINE',
+        badgeIntegration: 'INTEGRATING',
+        badgeDev: 'DEVELOPMENT',
+        btnOpen: 'OPEN',
+        btnStatus: 'STATUS',
+        mapaSubtitle: 'Operational routes & sectors',
+        mapaDesc: 'Waste collection, weeding and scraping sectors synchronized with city road network.',
+        fotoSubtitle: 'Evidence & inspection',
+        fotoDesc: 'Before/after geo-tagged photos and logs for City Hall municipal audit reports.',
+        papeleirasSubtitle: 'Litter Bins Mapping & Setup',
+        papeleirasDesc: 'Tracking coordinates, maintenance and installation of street waste receptacles.',
+        cirioSubtitle: 'Special Event Operations',
+        cirioDesc: 'Real-time monitoring of cleanup teams, waste disposal points and routes.',
+        dashCirioSubtitle: 'Operational Metrics',
+        dashCirioDesc: 'Waste volume metrics, cleared streets and active field crews.',
+        auraSubtitle: 'Weighing & Transfer Station',
+        auraDesc: 'Truck weighing scale logs and final waste disposal sync.',
+        rendSubtitle: 'Man-Hour Estimation',
+        rendDesc: 'Crew requirements calculated per linear meter of scraping and curbs.',
+        footerDept: 'OPERATIONAL PLANNING',
+        footerSecure: 'SECURE ENVIRONMENT (HTTPS)',
+        settingsTitle: 'Settings',
+        cfgLanguage: 'LANGUAGE',
+        cfgAppearance: 'APPEARANCE',
+        cfgQgisSync: 'QGIS & DATA SYNC',
+        cfgQgisAuto: 'Auto-sync WFS/GeoJSON layers',
+        cfgNotifyFrentes: 'Notify when new work fronts open',
+        cfgPwaTitle: 'DEVICE INSTALLATION (PWA)',
+        cfgPwaDesc: 'Install this portal on your phone or PC home screen for standalone access.',
+        btnInstallPwa: 'INSTALL APP',
+        cfgContact: 'PLANNING DEPARTMENT',
+        btnCancel: 'Close',
+        btnDone: 'DONE'
+      },
+      es: {
+        suiteSubtitle: 'PLANIFICACIÓN OPERATIVA',
+        statusConnected: 'SISTEMAS ACTIVOS',
+        installApp: 'INSTALAR APP',
+        orderLabel: 'ORDENAR',
+        searchPlaceholder: 'Buscar aplicaciones...',
+        catAll: 'Todas las Aplicaciones',
+        catGeo: 'Geo & Rutas (QGIS)',
+        catCampo: 'Fiscalización & Campo',
+        catCirio: 'Operativo Círio',
+        sectionProduction: 'SISTEMAS OPERATIVOS EN PRODUCCIÓN',
+        sectionUpcoming: 'MÓDULOS EN HOMOLOGACIÓN',
+        badgeOnline: 'EN LÍNEA',
+        badgeIntegration: 'EN INTEGRACIÓN',
+        badgeDev: 'DESARROLLO',
+        btnOpen: 'ABRIR',
+        btnStatus: 'ESTADO',
+        mapaSubtitle: 'Rutas y frentes operativas',
+        mapaDesc: 'Sectores de recolección y desmalezado sincronizados con la red vial y shapefiles.',
+        fotoSubtitle: 'Evidencias y fiscalización',
+        fotoDesc: 'Registro con fecha y fotos antes/después para auditoría municipal.',
+        papeleirasSubtitle: 'Papeleras y Mapeo',
+        papeleirasDesc: 'Control de instalación, coordenadas geográficas y papeleras en la ciudad.',
+        cirioSubtitle: 'Operativo Especial de Limpieza',
+        cirioDesc: 'Control de frentes de trabajo y puntos de descarga durante el evento.',
+        dashCirioSubtitle: 'Métricas de la Operación',
+        dashCirioDesc: 'Monitoreo de toneladas recogidas, vías despejadas y personal activo.',
+        auraSubtitle: 'Pesaje y Transferencia',
+        auraDesc: 'Sincronización de básculas de camiones y disposición final de residuos.',
+        rendSubtitle: 'Cálculo Hombre-Hora',
+        rendDesc: 'Estimación de personal necesario por metro lineal de desmalezado.',
+        footerDept: 'PLANIFICACIÓN OPERATIVA',
+        footerSecure: 'AMBIENTE SEGURO (HTTPS)',
+        settingsTitle: 'Configuración',
+        cfgLanguage: 'IDIOMA',
+        cfgAppearance: 'APARIENCIA',
+        cfgQgisSync: 'SINCRONIZACIÓN QGIS',
+        cfgQgisAuto: 'Actualizar capas WFS/GeoJSON',
+        cfgNotifyFrentes: 'Avisar nuevos frentes de trabajo',
+        cfgPwaTitle: 'INSTALACIÓN EN DISPOSITIVO (PWA)',
+        cfgPwaDesc: 'Instale este portal en su pantalla de inicio para acceso directo.',
+        btnInstallPwa: 'INSTALAR APLICACIÓN',
+        cfgContact: 'DEPARTAMENTO DE PLANIFICACIÓN',
+        btnCancel: 'Cerrar',
+        btnDone: 'LISTO'
+      }
+    };
+
+    let currentLang = 'pt';
+
+    function changeLanguage(lang) {
+      currentLang = lang;
+      document.getElementById('languageSelect').value = lang;
+      const dict = translations[lang];
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.textContent = dict[key];
+      });
+
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (dict[key]) el.setAttribute('placeholder', dict[key]);
+      });
+    }
+
+    // Gestor de Tema / Aparência
+    function setTheme(mode) {
+      const html = document.documentElement;
+      const btnSystem = document.getElementById('themeSystemBtn');
+      const btnLight = document.getElementById('themeLightBtn');
+      const btnDark = document.getElementById('themeDarkBtn');
+
+      [btnSystem, btnLight, btnDark].forEach(b => {
+        b.className = 'py-1 rounded text-craft-muted hover:text-craft-text transition-colors';
+      });
+
+      if (mode === 'dark') {
+        html.classList.add('dark');
+        btnDark.className = 'py-1 rounded bg-craft-card dark:bg-craft-darkCard text-craft-text dark:text-craft-darkText font-bold shadow-sm';
+        localStorage.setItem('cbl-theme', 'dark');
+      } else if (mode === 'light') {
+        html.classList.remove('dark');
+        btnLight.className = 'py-1 rounded bg-craft-card dark:bg-craft-darkCard text-craft-text dark:text-craft-darkText font-bold shadow-sm';
+        localStorage.setItem('cbl-theme', 'light');
+      } else {
+        localStorage.removeItem('cbl-theme');
+        btnSystem.className = 'py-1 rounded bg-craft-card dark:bg-craft-darkCard text-craft-text dark:text-craft-darkText font-bold shadow-sm';
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          html.classList.add('dark');
+        } else {
+          html.classList.remove('dark');
+        }
+      }
+    }
+
+    const savedTheme = localStorage.getItem('cbl-theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else {
+      setTheme('system');
+    }
+
+    // Filtro e Busca
+    function applyFilters() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const category = document.getElementById('categoryFilter').value;
+      const cards = document.querySelectorAll('.app-card');
+
+      cards.forEach(card => {
+        const name = card.getAttribute('data-name');
+        const cat = card.getAttribute('data-category');
+        const matchSearch = name.includes(query);
+        const matchCat = (category === 'todos' || cat === category);
+
+        if (matchSearch && matchCat) {
+          card.classList.remove('hidden');
+          card.classList.add('flex');
+        } else {
+          card.classList.add('hidden');
+          card.classList.remove('flex');
+        }
+      });
+    }
+
+    // Modal de Configurações
+    function toggleSettingsModal(show) {
+      const modal = document.getElementById('settingsModal');
+      if (show) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      } else {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    // Alternar Visualização (Grid vs Lista)
+    function setViewMode(mode) {
+      const container = document.getElementById('appsContainer');
+      const gridBtn = document.getElementById('viewGridBtn');
+      const listBtn = document.getElementById('viewListBtn');
+
+      if (mode === 'list') {
+        container.className = 'flex flex-col space-y-3 mb-8';
+        listBtn.className = 'px-2 py-1 bg-craft-btnHover dark:bg-craft-darkBtnHover text-craft-text dark:text-craft-darkText';
+        gridBtn.className = 'px-2 py-1 bg-craft-card dark:bg-craft-darkCard text-craft-muted hover:text-craft-text';
+      } else {
+        container.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8';
+        gridBtn.className = 'px-2 py-1 bg-craft-btnHover dark:bg-craft-darkBtnHover text-craft-text dark:text-craft-darkText';
+        listBtn.className = 'px-2 py-1 bg-craft-card dark:bg-craft-darkCard text-craft-muted hover:text-craft-text';
+      }
+    }
+
+    function showAppDetails(app) {
+      const msgs = {
+        'mapabl': 'MapaBL v2.4.0: Visualização vetorial de frentes de raspagem e rotas de coleta.',
+        'fotos': 'Relatório Fotográfico v2.1.2: Comprovação de serviços com fotos e coordenadas.',
+        'papeleiras': 'Papeleiras Belém Limpa v1.0.2: Registro e controle de papeleiras instaladas nos logradouros.',
+        'cirio': 'Operação Círio 2026: Cobertura especial de limpeza nos trajetos oficiais.',
+        'dashcirio': 'Painel Círio: Dashboard com métricas consolidadas de pesagem e frentes.'
+      };
+      alert(msgs[app] || 'Módulo operacional do planejamento.');
+    }
+
+    // PWA Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW:', err));
+      });
+    }
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = document.getElementById('btnInstallPwa');
+      if (btn) {
+        btn.classList.remove('hidden');
+        btn.classList.add('inline-flex');
+      }
+    });
+
+    function triggerPwaPrompt() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+      } else {
+        alert('Para instalar: no Android toque nos 3 pontinhos e escolha "Adicionar à tela inicial". No iPhone toque no botão Compartilhar e selecione "Adicionar à Tela de Início".');
+      }
+    }
+  </script>
+</body>
+</html>
