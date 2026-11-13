@@ -2,12 +2,17 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>CBL - Planejamento Operacional</title>
-  
+  <meta name="description" content="Portal do Planejamento Operacional da Concessionária Belém Limpa: mapas, relatórios e painéis." />
+
   <!-- PWA Meta Tags -->
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#18181b" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <meta name="theme-color" content="#065f46" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="CBL Planejamento" />
@@ -59,6 +64,12 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #d8d6cd; border-radius: 3px; }
     .dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
+    .btn-em-breve {
+      padding: 0.375rem 0.75rem; border: 1px dashed #c7c5bc; border-radius: 0.25rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 10px; letter-spacing: 0.05em; color: #73716b; cursor: not-allowed; white-space: nowrap; flex-shrink: 0; margin-left: 0.75rem;
+    }
+    .dark .btn-em-breve { border-color: #4f4f54; color: #a1a1aa; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between bg-craft-bg text-craft-text dark:bg-craft-darkBg dark:text-craft-darkText">
@@ -83,7 +94,7 @@
       </button>
 
       <!-- Botão de Instalar PWA -->
-      <button id="btnInstallPwa" onclick="triggerPwaPrompt()" class="hidden items-center space-x-1.5 px-2.5 py-1 text-xs border border-craft-border dark:border-craft-darkBorder hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover rounded font-mono-tech transition-colors">
+      <button id="btnInstallPwa" onclick="triggerPwaPrompt()" title="Instalar o portal como aplicativo" class="hidden items-center space-x-1.5 px-2.5 py-1 text-xs border border-craft-border dark:border-craft-darkBorder hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover rounded font-mono-tech transition-colors">
         <i class="fa-solid fa-download text-[11px]"></i>
         <span data-i18n="installApp">INSTALAR APP</span>
       </button>
@@ -92,11 +103,6 @@
       <button onclick="toggleSettingsModal(true)" class="p-1.5 rounded hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover text-craft-muted hover:text-craft-text dark:text-craft-darkMuted dark:hover:text-craft-darkText transition-colors" title="Configurações">
         <i class="fa-solid fa-gear"></i>
       </button>
-
-      <div class="hidden sm:flex items-center space-x-1 border-l border-craft-border dark:border-craft-darkBorder pl-2 text-craft-muted dark:text-craft-darkMuted">
-        <button class="p-1 hover:text-craft-text dark:hover:text-craft-darkText"><i class="fa-regular fa-window-minimize text-xs"></i></button>
-        <button class="p-1 hover:text-craft-text dark:hover:text-craft-darkText"><i class="fa-regular fa-square text-xs"></i></button>
-      </div>
     </div>
   </header>
 
@@ -107,7 +113,7 @@
         <i class="fa-solid fa-rotate-right"></i>
       </button>
       <span class="text-craft-muted dark:text-craft-darkMuted font-mono-tech text-[11px] hidden sm:inline">
-        cblplanejamento.com.br
+        hub.cblplanejamento.com.br
       </span>
     </div>
     
@@ -154,7 +160,7 @@
         <div>
           <div class="flex justify-between items-center text-[10px] font-mono-tech text-craft-muted dark:text-craft-darkMuted mb-3">
             <span>V2.4.0</span>
-            <a href="https://mapablv2.vercel.app/" target="_blank" class="hover:underline flex items-center space-x-1 text-craft-text dark:text-craft-darkText">
+            <a href="https://mapas.cblplanejamento.com.br/" target="_blank" class="hover:underline flex items-center space-x-1 text-craft-text dark:text-craft-darkText">
               <span data-i18n="badgeOnline">ONLINE</span>
               <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
             </a>
@@ -180,7 +186,7 @@
         </div>
 
         <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
-          <a href="https://mapablv2.vercel.app/" target="_blank" class="flex-1 text-center py-1.5 text-xs font-bold font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover text-craft-text dark:text-craft-darkText uppercase transition-colors" data-i18n="btnOpen">
+          <a href="https://mapas.cblplanejamento.com.br/" target="_blank" class="flex-1 text-center py-1.5 text-xs font-bold font-mono-tech tracking-wider rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover dark:hover:bg-craft-darkBtnHover text-craft-text dark:text-craft-darkText uppercase transition-colors" data-i18n="btnOpen">
             ABRIR
           </a>
           <button onclick="showAppDetails('mapabl')" class="px-2.5 py-1.5 rounded border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover text-craft-muted" title="Info">
@@ -381,7 +387,7 @@
           <p class="text-[11px] text-craft-muted line-clamp-2 mb-3 leading-relaxed" data-i18n="qgisSyncDesc">
             Alimentação de camadas vetoriais direto no QGIS sem necessidade de exportar shapefiles.
           </p>
-          <div class="text-[10px] font-mono-tech text-craft-muted">api.cblplanejamento.com.br/geo</div>
+          <div class="text-[10px] font-mono-tech text-craft-muted">Hoje: MapaBL &rsaquo; Acompanhar no QGIS</div>
         </div>
 
         <div class="mt-4 pt-3 border-t border-craft-border/50 dark:border-craft-darkBorder/50 flex items-center space-x-1.5">
@@ -605,13 +611,9 @@
           <div class="p-3 bg-white dark:bg-[#1e1e21] border border-craft-border dark:border-craft-darkBorder rounded">
             <div class="flex items-center justify-between mb-1">
               <span class="font-bold text-sm">Papeleiras Instaladas (Camada Dinâmica GeoJSON)</span>
-              <span class="text-[9px] font-mono-tech border border-craft-border dark:border-craft-darkBorder px-1.5 py-0.5 rounded text-craft-muted">API STREAMING</span>
+              <span class="text-[9px] font-mono-tech border border-dashed border-craft-border dark:border-craft-darkBorder px-1.5 py-0.5 rounded text-craft-muted">EM BREVE</span>
             </div>
-            <p class="text-craft-muted mb-2">Cole essa URL no QGIS em <em>Camada &gt; Adicionar Camada Vetorial &gt; Protocolo</em> para abrir os pontos cadastrados em campo em tempo real:</p>
-            <div class="flex items-center space-x-2">
-              <input type="text" readonly value="https://cblplanejamento.com.br/api/geo/papeleiras.geojson" class="flex-1 bg-craft-bg dark:bg-craft-darkBg border border-craft-border dark:border-craft-darkBorder rounded px-2.5 py-1 text-xs font-mono-tech text-craft-muted select-all" />
-              <button onclick="navigator.clipboard.writeText('https://cblplanejamento.com.br/api/geo/papeleiras.geojson'); alert('URL da camada copiada! Cole no QGIS.');" class="px-3 py-1 bg-craft-btn dark:bg-craft-darkBtn border border-craft-border dark:border-craft-darkBorder rounded font-mono-tech font-bold uppercase hover:bg-craft-btnHover">COPIAR</button>
-            </div>
+            <p class="text-craft-muted">Endereço para abrir no QGIS (<em>Camada &gt; Adicionar Camada Vetorial &gt; Protocolo</em>) os pontos cadastrados em campo. Ainda não publicado.</p>
           </div>
 
           <div class="p-3 bg-white dark:bg-[#1e1e21] border border-craft-border dark:border-craft-darkBorder rounded flex items-center justify-between">
@@ -619,9 +621,7 @@
               <div class="font-bold">Malha Oficial de Setores de Belém (Shapefile)</div>
               <p class="text-craft-muted">Polígonos dos setores de coleta domiciliar, raspagem e capinação (.zip).</p>
             </div>
-            <button onclick="alert('Download do Shapefile compactado dos setores de Belém (Malha 2026).')" class="px-3 py-1.5 border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover rounded font-mono-tech font-bold uppercase">
-              <i class="fa-solid fa-download mr-1"></i> BAIXAR ZIP
-            </button>
+            <button disabled class="btn-em-breve">EM BREVE</button>
           </div>
         </div>
 
@@ -632,9 +632,7 @@
               <div class="font-bold">Base Completa de Papeleiras (Excel / CSV)</div>
               <p class="text-craft-muted">Exportação com ID, Rua, Bairro, Data de Instalação, Coordenadas e Status de Conservação.</p>
             </div>
-            <button onclick="alert('Gerando exportação tabular para importação no Power BI Desktop...')" class="px-3 py-1.5 border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover rounded font-mono-tech font-bold uppercase">
-              <i class="fa-solid fa-file-excel mr-1"></i> EXPORTAR XLS
-            </button>
+            <button disabled class="btn-em-breve">EM BREVE</button>
           </div>
 
           <div class="p-3 bg-white dark:bg-[#1e1e21] border border-craft-border dark:border-craft-darkBorder rounded flex items-center justify-between">
@@ -642,9 +640,7 @@
               <div class="font-bold">Registros do Relatório Fotográfico Mensal</div>
               <p class="text-craft-muted">Tabela consolidada de evidências de capinação e raspagem com links diretos das fotos.</p>
             </div>
-            <button onclick="alert('Exportando tabela de fotos e coordenadas da capinação...')" class="px-3 py-1.5 border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover rounded font-mono-tech font-bold uppercase">
-              <i class="fa-solid fa-table mr-1"></i> EXPORTAR CSV
-            </button>
+            <button disabled class="btn-em-breve">EM BREVE</button>
           </div>
         </div>
 
@@ -655,9 +651,7 @@
               <div class="font-bold">Gabarito Padrão de Fixação de Papeleiras (.DWG)</div>
               <p class="text-craft-muted">Desenho técnico com vista frontal, lateral e engaste em postes/gradis metálicos.</p>
             </div>
-            <button onclick="alert('Download do arquivo técnico DWG de papeleiras para AutoCAD LT.')" class="px-3 py-1.5 border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover rounded font-mono-tech font-bold uppercase">
-              <i class="fa-solid fa-drafting-compass mr-1"></i> BAIXAR DWG
-            </button>
+            <button disabled class="btn-em-breve">EM BREVE</button>
           </div>
 
           <div class="p-3 bg-white dark:bg-[#1e1e21] border border-craft-border dark:border-craft-darkBorder rounded flex items-center justify-between">
@@ -665,9 +659,7 @@
               <div class="font-bold">Perfil Transversal de Meio-Fio e Sarjetas (.DWG)</div>
               <p class="text-craft-muted">Seção transversal padrão para projetos de raspagem e caiação de vias públicas.</p>
             </div>
-            <button onclick="alert('Download do perfil transversal em DWG.')" class="px-3 py-1.5 border border-craft-border dark:border-craft-darkBorder bg-craft-btn dark:bg-craft-darkBtn hover:bg-craft-btnHover rounded font-mono-tech font-bold uppercase">
-              <i class="fa-solid fa-drafting-compass mr-1"></i> BAIXAR DWG
-            </button>
+            <button disabled class="btn-em-breve">EM BREVE</button>
           </div>
         </div>
 
@@ -688,7 +680,8 @@
                   <th class="p-2.5 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-craft-border/50 dark:divide-craft-darkBorder/50 font-mono-tech text-[11px]">
+              <!-- O status (CONCLUÍDO / HOJE / PROGRAMADO) é calculado pela data da linha. data-ano = ano do calendário. -->
+              <tbody id="calendarioColeta" data-ano="2026" class="divide-y divide-craft-border/50 dark:divide-craft-darkBorder/50 font-mono-tech text-[11px]">
                 <tr>
                   <td class="p-2.5 font-bold">05/11</td>
                   <td class="p-2.5 text-craft-muted">Quinta-feira</td>
@@ -719,11 +712,11 @@
                   <td class="p-2.5">Conjunto Mestre Cardoso II</td>
                   <td class="p-2.5 text-right text-craft-muted">CONCLUÍDO</td>
                 </tr>
-                <tr class="bg-craft-card dark:bg-craft-darkCard font-semibold">
+                <tr>
                   <td class="p-2.5 font-bold">12/11</td>
                   <td class="p-2.5 text-craft-muted">Quinta-feira</td>
                   <td class="p-2.5">Conjunto Cordeiro</td>
-                  <td class="p-2.5 text-right text-emerald-600 font-bold">&bull; HOJE</td>
+                  <td class="p-2.5 text-right text-craft-muted">PROGRAMADO</td>
                 </tr>
                 <tr>
                   <td class="p-2.5 font-bold">13/11</td>
@@ -800,7 +793,7 @@
 
       <!-- Rodapé do Modal -->
       <div class="border-t border-craft-border dark:border-craft-darkBorder px-6 py-3 flex items-center justify-between bg-craft-bg dark:bg-craft-darkBg">
-        <span class="text-[10px] font-mono-tech text-craft-muted">SINCRONIZADO COM O BANCO DE DADOS OPERACIONAL</span>
+        <span class="text-[10px] font-mono-tech text-craft-muted">ATUALIZADO PELO PLANEJAMENTO OPERACIONAL</span>
         <button onclick="toggleDataHubModal(false)" class="px-4 py-1.5 bg-craft-text text-craft-card dark:bg-craft-darkText dark:text-craft-darkBg rounded text-xs font-bold font-mono-tech uppercase tracking-wider transition-colors">
           FECHAR
         </button>
@@ -853,18 +846,6 @@
             </div>
           </div>
 
-          <!-- Sincronização -->
-          <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21] space-y-2">
-            <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted" data-i18n="cfgQgisSync">SINCRONIZAÇÃO QGIS & SERVIÇOS</label>
-            <div class="flex items-center justify-between text-[11px]">
-              <span data-i18n="cfgQgisAuto">Atualizar camadas WFS/GeoJSON</span>
-              <input type="checkbox" checked class="accent-zinc-700 cursor-pointer" />
-            </div>
-            <div class="flex items-center justify-between text-[11px]">
-              <span data-i18n="cfgNotifyFrentes">Avisar novas frentes de capinação</span>
-              <input type="checkbox" checked class="accent-zinc-700 cursor-pointer" />
-            </div>
-          </div>
         </div>
 
         <div class="space-y-4">
@@ -883,7 +864,6 @@
           <div class="border border-craft-border dark:border-craft-darkBorder rounded p-3 bg-white dark:bg-[#1e1e21] space-y-1">
             <label class="block font-mono-tech text-[10px] uppercase text-craft-muted dark:text-craft-darkMuted" data-i18n="cfgContact">SETOR DE PLANEJAMENTO</label>
             <p class="text-[11px] font-bold">Concessionária Belém Limpa</p>
-            <p class="text-[11px] text-craft-muted font-mono-tech">planejamento@cblplanejamento.com.br</p>
             <p class="text-[10px] text-craft-muted">Ananindeua / Belém &bull; Pará</p>
           </div>
         </div>
@@ -900,6 +880,20 @@
         </button>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: COMO INSTALAR ==================== -->
+  <div id="installModal" class="fixed inset-0 bg-black/50 backdrop-blur-[1px] hidden items-center justify-center z-[60] p-4" onclick="if(event.target===this)toggleInstallModal(false)">
+    <div class="bg-craft-card dark:bg-craft-darkCard border border-craft-border dark:border-craft-darkBorder rounded shadow-2xl max-w-md w-full overflow-hidden">
+      <div class="border-b border-craft-border dark:border-craft-darkBorder px-5 py-3 flex items-center justify-between bg-craft-bg dark:bg-craft-darkBg">
+        <h2 class="font-bold text-sm">Instalar o portal</h2>
+        <button onclick="toggleInstallModal(false)" class="text-craft-muted hover:text-craft-text dark:hover:text-craft-darkText" title="Fechar"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="p-5 text-xs space-y-3">
+        <p id="installModalMsg" class="text-craft-muted dark:text-craft-darkMuted"></p>
+        <ol id="installModalSteps" class="list-decimal pl-4 space-y-1.5 leading-relaxed"></ol>
+      </div>
     </div>
   </div>
 
@@ -1242,31 +1236,98 @@
       alert(msgs[app] || 'Módulo operacional do planejamento.');
     }
 
-    // PWA Service Worker
+    // Idioma escolhido fica guardado
+    try {
+      const idiomaSalvo = localStorage.getItem('cbl-lang');
+      if (idiomaSalvo && translations[idiomaSalvo] && idiomaSalvo !== 'pt') changeLanguage(idiomaSalvo);
+    } catch (e) {}
+    document.getElementById('languageSelect').addEventListener('change', (e) => {
+      try { localStorage.setItem('cbl-lang', e.target.value); } catch (err) {}
+    });
+
+    // Calendário da coleta programada: status calculado pela data de hoje
+    (function marcarCalendario() {
+      const corpo = document.getElementById('calendarioColeta');
+      if (!corpo) return;
+      const ano = parseInt(corpo.getAttribute('data-ano'), 10);
+      const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+      corpo.querySelectorAll('tr').forEach((linha) => {
+        const tds = linha.querySelectorAll('td');
+        const m = /^(\d{2})\/(\d{2})$/.exec((tds[0] ? tds[0].textContent : '').trim());
+        if (!m) return;
+        const data = new Date(ano, parseInt(m[2], 10) - 1, parseInt(m[1], 10));
+        const st = tds[tds.length - 1];
+        if (data.getTime() === hoje.getTime()) {
+          linha.className = 'bg-craft-card dark:bg-craft-darkCard font-semibold';
+          st.className = 'p-2.5 text-right text-emerald-600 font-bold';
+          st.textContent = '• HOJE';
+        } else {
+          st.className = 'p-2.5 text-right text-craft-muted';
+          st.textContent = data < hoje ? 'CONCLUÍDO' : 'PROGRAMADO';
+        }
+      });
+    })();
+
+    // PWA Service Worker (as páginas do hub são buscadas na rede primeiro; ver sw.js)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js').catch(err => console.log('SW:', err));
       });
     }
 
-    let deferredPrompt;
+    // Instalação: celular e computador
+    let deferredPrompt = null;
+    const jaInstalado = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+    function mostrarBotaoInstalar(mostrar) {
+      const btn = document.getElementById('btnInstallPwa');
+      if (!btn) return;
+      btn.classList.toggle('hidden', !mostrar);
+      btn.classList.toggle('inline-flex', mostrar);
+    }
+    mostrarBotaoInstalar(!jaInstalado);
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      const btn = document.getElementById('btnInstallPwa');
-      if (btn) {
-        btn.classList.remove('hidden');
-        btn.classList.add('inline-flex');
-      }
+      mostrarBotaoInstalar(true);
     });
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
+      mostrarBotaoInstalar(false);
+    });
+
+    function toggleInstallModal(show) {
+      const modal = document.getElementById('installModal');
+      modal.classList.toggle('hidden', !show);
+      modal.classList.toggle('flex', show);
+    }
+
+    function passosDeInstalacao() {
+      const ua = navigator.userAgent;
+      const iOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (iOS) return { msg: 'No iPhone ou iPad, abra este endereço no Safari e:', passos: ['Toque no botão Compartilhar (quadrado com a seta para cima).', 'Escolha "Adicionar à Tela de Início".', 'Toque em "Adicionar".'] };
+      if (/Android/i.test(ua)) return { msg: 'No Android, pelo Chrome:', passos: ['Toque nos três pontinhos no canto superior direito.', 'Escolha "Instalar aplicativo" ou "Adicionar à tela inicial".', 'Confirme em "Instalar".'] };
+      if (/Edg\//.test(ua)) return { msg: 'No computador, pelo Microsoft Edge:', passos: ['Clique nos três pontinhos (…) no canto superior direito.', 'Abra "Aplicativos" e clique em "Instalar este site como um aplicativo".', 'Confirme em "Instalar". O portal abre em janela própria e fica no menu Iniciar e na barra de tarefas.'] };
+      if (/Firefox\//.test(ua)) return { msg: 'O Firefox no computador não instala sites como aplicativo.', passos: ['Abra hub.cblplanejamento.com.br no Microsoft Edge ou no Google Chrome.', 'Clique em "Instalar app" de novo.'] };
+      if (/Macintosh/.test(ua) && /Safari\//.test(ua) && !/Chrome\//.test(ua)) return { msg: 'No Mac, pelo Safari:', passos: ['Abra o menu Arquivo (ou o botão Compartilhar).', 'Escolha "Adicionar ao Dock".'] };
+      return { msg: 'No computador, pelo Google Chrome:', passos: ['Clique no ícone de instalar (monitor com uma seta) no fim da barra de endereço.', 'Se o ícone não aparecer: três pontinhos > "Transmitir, salvar e compartilhar" > "Instalar página como app".', 'Confirme em "Instalar". O portal abre em janela própria e fica no menu Iniciar e na barra de tarefas.'] };
+    }
 
     function triggerPwaPrompt() {
       if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
-      } else {
-        alert('Para instalar: no Android toque nos 3 pontinhos e escolha "Adicionar à tela inicial". No iPhone toque no botão Compartilhar e selecione "Adicionar à Tela de Início".');
+        return;
       }
+      const info = jaInstalado
+        ? { msg: 'O portal já está instalado neste aparelho e você está usando a versão instalada.', passos: [] }
+        : passosDeInstalacao();
+      document.getElementById('installModalMsg').textContent = info.msg;
+      const lista = document.getElementById('installModalSteps');
+      lista.innerHTML = '';
+      info.passos.forEach((p) => { const li = document.createElement('li'); li.textContent = p; lista.appendChild(li); });
+      toggleInstallModal(true);
     }
   </script>
 </body>
